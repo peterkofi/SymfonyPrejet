@@ -1,0 +1,69 @@
+
+{% extends "template.html.twig" %}
+
+{% block pageTitle %}
+ Gestion Programme
+{% endblock %}
+
+
+{% block body %}
+
+{% for message in app.session.flashBag.get('error') %}
+    <div class="alert alert-danger" role="alert">  {{message}} </div>
+{% endfor %}
+
+{% for message in app.session.flashBag.get('success') %}
+    <div class="alert alert-success" role="alert">  {{message}} </div>
+{% endfor %}
+
+
+<div class="d-flex justify-content-end"><a href="{{path('niveau.edit',{id:null})}}"> Ajout</a></div>
+ 
+ <table class="table mt-5">
+  <thead>
+    <tr>
+      <th scope="col">N°</th>
+      <th scope="col">Niveau</th>
+      <th scope="col">Description</th>
+      <th scope="col">Operation</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for niv in niveau %}
+    <tr>
+      <th scope="row">{{niv.id}}</th>
+      <td>{{ niv.libelle}}</td>
+      <td>{{ niv.description}}</td>
+      <td><a href="{{path('niveau.detail',{id:niv.id})}}">detail</a></td>
+      <td><a href="{{path('niveau.delete',{id:niv.id})}}">suppr</a></td>
+      <td><a href="{{path('niveau.edit',{id:niv.id})}}">edit</a></td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+ <div class='row mt-2'>
+
+ <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+ 
+ </div>
+    
+
+
+
+{% endblock %}

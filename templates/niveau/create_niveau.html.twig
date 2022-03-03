@@ -1,0 +1,27 @@
+
+{% extends "template.html.twig" %}
+
+{% block pageTitle %}
+<h5 class="d-flex justify-content-center my-3">Ajout Niveau </h5>
+{% endblock %}
+
+
+{% block body %}
+
+{% for message in app.session.flashBag.get('error') %}
+    <div class="alert alert-danger" role="alert">  {{message}} </div>
+{% endfor %}
+
+{% for message in app.session.flashBag.get('success') %}
+    <div class="alert alert-success" role="alert">  {{message}} </div>
+{% endfor %}
+
+
+{{form(form)}}
+ 
+ </div>
+    
+
+
+
+{% endblock %}

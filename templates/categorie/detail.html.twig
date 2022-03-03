@@ -1,0 +1,22 @@
+{% extends "template.html.twig" %}
+
+
+{% block pageTitle %}
+<h5 class="d-flex justify-content-center my-3">Detail La Catégorie</h5> 
+{% endblock %}
+
+{% block body %}
+ <div class="card" style="width: 18rem;">
+  {# <img src="..." class="card-img-top" alt="..."> #}
+  <div class="card-body">
+    <h5 class="card-title">{{categorie.libelle}}</h5>
+    <p class="card-text">{{categorie.Description}}</p>
+    cette Catégorie a été crée le <p class="card-text">{{categorie.createdAt | date('m/d/y') }}</p>
+     <a href="{{ path('categorie.list')}}" class="btn btn-primary">liste</a>
+    <a href="{{ path('categorie.delete',{id:categorie.id})}}" class="btn btn-primary">supp</a> 
+    <a href="{{ path('categorie.edit',{id:categorie.id})}}" class="btn btn-primary">edit</a> 
+  </div>
+</div>
+    
+
+{% endblock %}

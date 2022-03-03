@@ -1,0 +1,21 @@
+{% extends "template.html.twig" %}
+
+{% block pageTitle %}
+<h5 class="d-flex justify-content-center my-3">Detail Du Programme</h5> 
+{% endblock %}
+
+{% block body %}
+ <div class="card" style="width: 18rem;">
+  {# <img src="..." class="card-img-top" alt="..."> #}
+  <div class="card-body">
+    <h5 class="card-title">{{programme.libelle}}</h5>
+    <p class="card-text">{{programme.Description}}</p>
+      ce programme a été crée le <p class="card-text">{{programme.createdAt | date('m/d/y') }}</p>
+     <a href="{{ path('programme.list')}}" class="btn btn-primary">liste</a>
+    <a href="{{ path('programme.delete',{id:programme.id})}}" class="btn btn-primary">supp</a> 
+    <a href="{{ path('programme.edit',{id:programme.id})}}" class="btn btn-primary">edit</a> 
+  </div>
+</div>
+    
+
+{% endblock %}

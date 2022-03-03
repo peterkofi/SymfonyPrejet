@@ -1,0 +1,69 @@
+
+{% extends "template.html.twig" %}
+
+{% block pageTitle %}
+ Gestion Programme
+{% endblock %}
+
+
+{% block body %}
+
+{% for message in app.session.flashBag.get('error') %}
+    <div class="alert alert-danger" role="alert">  {{message}} </div>
+{% endfor %}
+
+{% for message in app.session.flashBag.get('success') %}
+    <div class="alert alert-success" role="alert">  {{message}} </div>
+{% endfor %}
+
+<div class="d-flex justity-content-end"><a href="{{path('categorie.add')}}"> Ajout</a></div>
+
+ <table class="table table-bordered mt-5">
+  <thead>
+    <tr>
+      <th scope="col">N°</th>
+      <th scope="col">Categorie</th>
+      <th scope="col">Description</th>
+      <th scope="col">Operation</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for cat in categorie %}
+    <tr>
+      <th scope="row">{{cat.id}}</th>
+      <td>{{ cat.libelle}}</td>
+      <td>{{ cat.description}}</td>
+      <td><a href="{{path('categorie.detail',{id:cat.id})}}">detail</a>
+          <a href="{{path('categorie.delete',{id:cat.id})}}">suppr</a>
+          <a href="{{path('categorie.edit',{id:cat.id})}}">edit</a>
+      </td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+ <div class='row mt-2'>
+
+ <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+ 
+ </div>
+    
+
+
+
+{% endblock %}

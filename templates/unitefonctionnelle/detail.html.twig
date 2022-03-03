@@ -1,0 +1,19 @@
+{% extends "template.html.twig" %}
+
+{% block pageTitle %}
+    detail utilisateur
+{% endblock %}
+
+{% block body %}
+ <div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{uniteFonctionnelle.libelle}}</h5>
+    <p class="card-text">{{uniteFonctionnelle.Description}}</p>
+     <a href="{{ path('uniteFonctionnelle.list')}}" class="btn btn-primary">liste</a>
+    <a href="{{ path('uniteFonctionnelle.delete',{id:uniteFonctionnelle.id})}}" class="btn btn-primary">suprimmer</a> 
+  </div>
+</div>
+    
+
+{% endblock %}

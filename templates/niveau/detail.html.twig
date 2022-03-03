@@ -1,0 +1,22 @@
+{% extends "template.html.twig" %}
+
+
+{% block pageTitle %}
+<h5 class="d-flex justify-content-center my-3">Detail Du Niveau</h5> 
+{% endblock %}
+
+{% block body %}
+ <div class="card" style="width: 18rem;">
+  {# <img src="..." class="card-img-top" alt="..."> #}
+  <div class="card-body">
+    <h5 class="card-title">{{niveau.libelle}}</h5>
+    <p class="card-text">{{niveau.Description}}</p>
+    cet Niveau a été crée le <p class="card-text">{{niveau.createdAt | date('m/d/y') }}</p>
+     <a href="{{ path('niveau.list')}}" class="btn btn-primary">liste</a>
+    <a href="{{ path('niveau.delete',{id:niveau.id})}}" class="btn btn-primary">supp</a> 
+    <a href="{{ path('niveau.edit',{id:niveau.id})}}" class="btn btn-primary">edit</a> 
+  </div>
+</div>
+    
+
+{% endblock %}

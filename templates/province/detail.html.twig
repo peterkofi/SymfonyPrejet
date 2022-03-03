@@ -1,0 +1,20 @@
+{% extends "template.html.twig" %}
+
+{% block pageTitle %}
+<h5 class="d-flex justify-content-center my-3">Detail Du Province</h5> 
+{% endblock %}
+
+{% block body %}
+ <div class="card" style="width: 18rem;">
+  {# <img src="..." class="card-img-top" alt="..."> #}
+  <div class="card-body">
+    <h5 class="card-title">{{province.libelle}}</h5>
+      ce province a été crée le <p class="card-text">{{province.createdAt | date('m/d/y') }}</p>
+     <a href="{{ path('province.list')}}" class="btn btn-primary">liste</a>
+    <a href="{{ path('province.delete',{id:province.id})}}" class="btn btn-primary">supp</a> 
+    <a href="{{ path('province.edit',{id:province.id})}}" class="btn btn-primary">edit</a> 
+  </div>
+</div>
+    
+
+{% endblock %}
