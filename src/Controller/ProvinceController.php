@@ -52,6 +52,7 @@ class ProvinceController extends AbstractController
             $province =new Province();
         }
         if($new){
+            $province->setCreatedBy($this->getUser());
             $message='le province a été ajouté avec succès !';
          
          }else{

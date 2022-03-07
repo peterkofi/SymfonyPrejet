@@ -24,7 +24,7 @@ class Categorie
     private $id;
 
     #[ORM\Column(type: 'string', length: 50)]
-    #[Assert\NotBlank('veillez remplir ce champ')]
+    #[Assert\NotBlank(message:"veillez remplir ce champ")]
 
     private $libelle;
 
@@ -33,6 +33,9 @@ class Categorie
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Niveau::class)]
     private $niveau;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'categories')]
+    private $createdBy;
 
     public function __construct()
     {
@@ -100,6 +103,18 @@ class Categorie
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
     }
 
 }

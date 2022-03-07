@@ -26,12 +26,19 @@ class UniteFonctionnelle
 
 
     //#[ORM\OneToOne(inversedBy: 'no', targetEntity: Programme::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $programme;
+    // #[ORM\JoinColumn(nullable: false)]
+    // private $programme;
 
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'uniteFonctionnelles')]
     #[ORM\JoinColumn(nullable: false)]
     private $Categorie;
+
+    #[ORM\ManyToOne(targetEntity: Programme::class, inversedBy: 'uniteFonctionnelles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $programme;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'uniteFonctionnelles')]
+    private $createdBy;
 
 
 
@@ -65,17 +72,17 @@ class UniteFonctionnelle
     }
 
 
-    public function getProgramme(): ?Programme
-    {
-        return $this->programme;
-    }
+    // public function getProgramme(): ?Programme
+    // {
+    //     return $this->programme;
+    // }
 
-    public function setProgramme(Programme $programme): self
-    {
-        $this->programme = $programme;
+    // public function setProgramme(Programme $programme): self
+    // {
+    //     $this->programme = $programme;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getCategorie(): ?Categorie
     {
@@ -94,5 +101,29 @@ class UniteFonctionnelle
         return $this->libelle;
     }
 
-   
+    public function getProgramme(): ?Programme
+    {
+        return $this->programme;
+    }
+
+    public function setProgramme(?Programme $programme): self
+    {
+        $this->programme = $programme;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+
 }

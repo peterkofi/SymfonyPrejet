@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Traits\TimeStampTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NiveauRepository;
 
@@ -25,11 +27,15 @@ class Niveau
     private $description;
 
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'niveau')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $no;
-
-    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'niveau')]
     private $categorie;
+
+    #[ORM\ManyToMany(targetEntity: Province::class, inversedBy: 'niveaux')]
+    private $province;
+
+    public function __construct()
+    {
+        $this->province = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,17 +66,7 @@ class Niveau
         return $this;
     }
 
-    public function getNo(): ?Categorie
-    {
-        return $this->no;
-    }
-
-    public function setNo(?Categorie $no): self
-    {
-        $this->no = $no;
-
-        return $this;
-    }
+  
 
     public function getCategorie(): ?Categorie
     {
@@ -86,6 +82,30 @@ class Niveau
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    /**
+     * @return Collection<int, Province>
+     */
+    public function getProvince(): Collection
+    {
+        return $this->province;
+    }
+
+    public function addProvince(Province $province): self
+    {
+        if (!$this->province->contains($province)) {
+            $this->province[] = $province;
+        }
+
+        return $this;
+    }
+
+    public function removeProvince(Province $province): self
+    {
+        $this->province->removeElement($province);
+
+        return $this;
     }
 
 }

@@ -54,6 +54,7 @@ class NiveauController extends AbstractController
             }
      //   
      if($new){
+        $niveau->setCreatedBy($this->getUser());
         $message='le niveau a été ajouté avec succès !';
      
      }else{
@@ -80,7 +81,7 @@ class NiveauController extends AbstractController
             }else{
 
 
-                 return $this->render('Niveau/create_programme.html.twig',[
+                 return $this->render('niveau/create_programme.html.twig',[
             'form' => $form->createView()
         ]);
             }
@@ -128,7 +129,7 @@ class NiveauController extends AbstractController
             }else{
 
 
-                 return $this->render('Niveau/create_programme.html.twig',[
+                 return $this->render('niveau/create_niveau.html.twig',[
             'form' => $form->createView()
         ]);
             }

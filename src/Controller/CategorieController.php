@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Form\CategorieType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/categorie')]
@@ -40,12 +42,6 @@ class CategorieController extends AbstractController
     }
 
 
-    #[Route('/add', name: 'categorie.add')]
-    public function addCategorie(): Response
-    {
-        return $this->render('categorie/index.html.twig');
-    }
-
     #[Route('/edit/{id?0}', name: 'categorie.edit')]
     public function addProgramme(Categorie $categorie=null, ManagerRegistry $doctrine,Request $request): Response
     {
@@ -58,13 +54,14 @@ class CategorieController extends AbstractController
             }
      //   
      if($new){
+        $categorie->setCreatedBy($this->getUser());
         $message='le categorie a été ajouté avec succès !';
      
      }else{
          $message='le categorie a été mise à jour avec succès !';
      }
        
-         $form=$this->createForm(Categorie::class, $categorie);
+         $form=$this->createForm(CategorieType::class, $categorie);
             $form->remove("createdAt");
             $form->remove("updatedAt");
             $form->handleRequest($request);

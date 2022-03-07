@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\UniteFonctionnelle;
+use App\Entity\Categorie;
+use App\Entity\Programme;
 use App\Form\UniteFonctionnelleType;
 use Doctrine\Persistence\ManagerRegistry;
 use Illuminate\Http\RedirectResponse;
@@ -11,13 +13,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use function PHPUnit\Framework\at;
+
 #[Route('/unitefonctionnelle')]
 class UnitefonctionnelleController extends AbstractController
 {
     #[Route('/', name: 'unitefonctionnelle.list')]
     public function index(ManagerRegistry $doctrine): Response
     {
-        
+       
         $repository=$doctrine->getRepository(UniteFonctionnelle::class);
      
         $nombreunitefonctionnelle=$repository->count([]);
@@ -30,6 +34,7 @@ class UnitefonctionnelleController extends AbstractController
 
         return $this->render('unitefonctionnelle/index.html.twig', [
             'unitefonctionnelle' => $unitefonctionnelle,
+
             'isPaginated'=>true,
              'nombrePage'=>$nombrePage,
             // 'page'=>$page,
@@ -39,7 +44,7 @@ class UnitefonctionnelleController extends AbstractController
     }
 
     #[Route('/{id<\d+>}', name: 'unitefonctionnelle.detail')]
-    public function detail(ManagerRegistry $doctrine,$id): Response
+    public function detailUniteFonctionnelle(ManagerRegistry $doctrine,$id): Response
     {
          $entityManager=$doctrine->getRepository(UniteFonctionnelle::class);
  
@@ -50,16 +55,29 @@ class UnitefonctionnelleController extends AbstractController
             return $this->redirectToRoute('unitefonctionnelle.list');
         }
         
-        return $this->render('programme/detail.html.twig', [
+        return $this->render('unitefonctionnelle/detail.html.twig', [
              'uniteFonctionnelle'=>$uniteFonctionnelle
         ]);
     }
 
-    #[Route('/add', name: 'unitefonctionnelle.add')]
-    public function addProgramme(ManagerRegistry $doctrine, Request $request): Response
+    #[Route('/edit/{id?0}', name: 'unitefonctionnelle.add')]
+    public function addUniteFonctionnelle(UniteFonctionnelle $uniteFonctionnelle, ManagerRegistry $doctrine, Request $request): Response
     {
-        $uniteFonctionnelle= new UniteFonctionnelle();
- 
+       
+        $new=false;
+       
+        if(!$uniteFonctionnelle){ 
+            $new=true; 
+            $uniteFonctionnelle= new UniteFonctionnelle();
+    
+        }
+        if($new){
+            $uniteFonctionnelle->setCreatedBy($this->getUser());
+            $message="l'unité a été ajouté avec succès !";
+         
+         }else{
+             $message="l'unité a été mise à jour avec succès !";
+         }
        
         $form=$this->createForm(UniteFonctionnelleType::class,$uniteFonctionnelle);
         $form->remove('createdAt');
@@ -77,7 +95,7 @@ class UnitefonctionnelleController extends AbstractController
 
          $manager->flush();
         
-         $this->addFlash(type:'success',message:"l'ajout de l'unité ". $uniteFonctionnelle->getLibelle()." a été effectué avec success !");
+         $this->addFlash(type:'success',message:$message);
       
           return  $this->redirectToRoute('unitefonctionnelle.list');
         }else{
@@ -88,24 +106,24 @@ class UnitefonctionnelleController extends AbstractController
         
     }
 
-    #[Route('/add/{libelle}/{description}', name: 'unitefonctionnelle.addParam')]
-    public function addParamProgramme(ManagerRegistry $doctrine,$libelle,$description): RedirectResponse
-    {
-        $entityManager=$doctrine->getManager();
+    // #[Route('/add/{libelle}/{description}', name: 'unitefonctionnelle.addParam')]
+    // public function addUniteFonctionnelleParam(ManagerRegistry $doctrine,$libelle,$description): RedirectResponse
+    // {
+    //     $entityManager=$doctrine->getManager();
  
-         $uniteFonctionnelle= new UniteFonctionnelle();
+    //      $uniteFonctionnelle= new UniteFonctionnelle();
 
-        $uniteFonctionnelle->setLibelle($libelle);
-        $uniteFonctionnelle->setDescription($description);
+    //     $uniteFonctionnelle->setLibelle($libelle);
+    //     $uniteFonctionnelle->setDescription($description);
     
-        $entityManager->persist($uniteFonctionnelle);
+    //     $entityManager->persist($uniteFonctionnelle);
 
-        $entityManager->flush();
+    //     $entityManager->flush();
      
-        $this->addFlash(type:'success',message:'ajout reussi !');
+    //     $this->addFlash(type:'success',message:'ajout reussi !');
    
-        return $this->redirectToRoute('unitefonctionnelle.list');
-    }
+    //     return $this->redirectToRoute('unitefonctionnelle.list');
+    // }
 
     #[Route('/delete/{id}', name: 'unitefonctionnelle.delete')]
     public function deleteUniteFonctionnelle( ManagerRegistry $doctrine,$id): RedirectResponse

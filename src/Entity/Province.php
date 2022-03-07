@@ -26,9 +26,16 @@ class Province
     #[ORM\OneToMany(mappedBy: 'province', targetEntity: ZoneDeSante::class)]
     private $no;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'provinces')]
+    private $createdBy;
+
+    #[ORM\ManyToMany(targetEntity: Niveau::class, mappedBy: 'province')]
+    private $niveaux;
+
     public function __construct()
     {
         $this->no = new ArrayCollection();
+        $this->niveaux = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,6 +84,45 @@ class Province
             if ($no->getProvince() === $this) {
                 $no->setProvince(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Niveau>
+     */
+    public function getNiveaux(): Collection
+    {
+        return $this->niveaux;
+    }
+
+    public function addNiveau(Niveau $niveau): self
+    {
+        if (!$this->niveaux->contains($niveau)) {
+            $this->niveaux[] = $niveau;
+            $niveau->addProvince($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNiveau(Niveau $niveau): self
+    {
+        if ($this->niveaux->removeElement($niveau)) {
+            $niveau->removeProvince($this);
         }
 
         return $this;

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[Route('programme')]
 class ProgrammeController extends AbstractController
@@ -69,6 +70,7 @@ class ProgrammeController extends AbstractController
             }
      //   
      if($new){
+        $programme->setCreatedBy($this->getUser());
         $message='le programme a été ajouté avec succès !';
      
      }else{
@@ -78,10 +80,12 @@ class ProgrammeController extends AbstractController
          $form=$this->createForm(ProgrammeType::class, $programme);
             $form->remove("createdAt");
             $form->remove("updatedAt");
+
             $form->handleRequest($request);
             if($form->isSubmitted() ){    
                
-             //  dd($form->getData()); == dd($programme)
+             //  $progrmme=$form->getData(); dd($progrmme); ==> dd($programme)
+
 
                 $entityManager=$doctrine->getManager();
 

@@ -2,7 +2,7 @@
 {% extends "template.html.twig" %}
 
 {% block pageTitle %}
- Gestion Programme
+<h5 class="d-flex justify-content-center my-4 text-bold/">GESTION PROGAMME</h5>
 {% endblock %}
 
 
@@ -16,9 +16,9 @@
     <div class="alert alert-success" role="alert">  {{message}} </div>
 {% endfor %}
 
-
-
-<div class="d-flex justify-content-end"><a href="{{path('programme.edit',{id:null})}}"> Ajout</a></div>
+<!-- 
+<i class="fa fa-trash"></i> -->
+<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('programme.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
  <table class="table table-bordered mt-5">
   <thead>
     <tr>
@@ -34,9 +34,16 @@
       <th scope="row">{{program.id}}</th>
       <td>{{ program.libelle}}</td>
       <td>{{ program.description}}</td>
-      <td><a href="{{path('programme.detail',{id:program.id})}}">detail</a>
-          <a href="{{path('programme.delete',{id:program.id})}}">suppr</a>
-          <a href="{{path('programme.edit',{id:program.id})}}">edit</a>
+      <td>
+        <a href="{{path('programme.detail',{id:program.id})}}" class='mx-2'> 
+          <img src="{{asset('assets/icons/visibleBlue_96px.png')}}" width="15" height="15"/>
+        </a> 
+        <a href="{{path('programme.delete',{id:program.id})}}" class='mx-2'> 
+          <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
+        </a> 
+        <a href="{{path('programme.edit',{id:program.id})}}" class='mx-2'> 
+          <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/>
+        </a>
       </td>
       
     </tr>
