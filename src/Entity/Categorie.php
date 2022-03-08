@@ -39,7 +39,7 @@ class Categorie
 
     public function __construct()
     {
-        $this->niveau = new ArrayCollection();
+         $this->niveau = new ArrayCollection();
     }
 
     public function getId(): ?int

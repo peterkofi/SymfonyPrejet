@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Categorie;
 use App\Entity\Niveau;
 use App\Entity\Province;
 use Doctrine\ORM\EntityRepository;
@@ -19,7 +20,22 @@ class NiveauType extends AbstractType
             ->add('description')
             ->add('createdAt')
             ->add('updatedAt')
-            ->add('categorie')
+            ->add('categorie',EntityType::class,[
+                'expanded'=>false,
+                 'multiple'=>true,
+                 'class'=>Categorie::class,
+                 'required'=>false,
+                 'query_builder'=>function(EntityRepository $er){
+                       return $er->createQueryBuilder('c')
+                                 ->orderBy('c.libelle','ASC');
+
+                 },
+                       
+                 'attr'=>[
+                     'class'=>'select2'
+                 ]
+ 
+             ])
             ->add('province',EntityType::class,[
                 'expanded'=>false,
                  'multiple'=>true,

@@ -22,7 +22,7 @@ class Programme
     private $id;
 
     #[ORM\Column(type: 'string', length: 50)]
-    #[Assert\NotBlank('veillez remplir ce champ')]
+    #[Assert\NotBlank(message:'veillez remplir ce champ')]
 
     private $libelle;
 

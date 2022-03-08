@@ -15,30 +15,29 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[Route('programme')]
 class ProgrammeController extends AbstractController
 {
-    #[Route('/', name: 'programme.list')]
-    public function index(ManagerRegistry $doctrine): Response
+    #[Route('/{page?1}/{nbre?10}', name: 'programme.list')]
+    public function index(ManagerRegistry $doctrine, $page, $nbre): Response
     {
 
          $repository=$doctrine->getRepository(Programme::class);
      
          $nombreProgramme=$repository->count([]);
 
-         $nbre=10;
+      //   $nbre=10;
         
          $nombrePage=ceil($nombreProgramme/$nbre);
 
-        $programme=$repository->findAll();
+      //  $programme=$repository->findAll();
 
-    //  $programme=$repository->findBy([],[],$page,($page - 1)*$nbre);
+       $programme=$repository->findBy([],[], $nbre, ($page - 1)*$nbre);
         return $this->render('programme/index.html.twig', [
             'programme' => $programme,
             'isPaginated'=>true,
-             'nombrePage'=>$nombrePage,
-            // 'page'=>$page,
-             'nombreElent'=>$nbre
+             'nbrPage'=>$nombrePage,
+             'page'=>$page,
+             'nbre'=>$nbre
 
-        ],
-        );
+        ]);
     }
     #[Route('/{id<\d+>}', name: 'programme.detail')]
     public function detailProgramme(Programme $programme, ManagerRegistry $doctrine,$id): Response
@@ -61,7 +60,7 @@ class ProgrammeController extends AbstractController
     #[Route('/edit/{id?0}', name: 'programme.edit')]
     public function addProgramme(Programme $programme=null, ManagerRegistry $doctrine,Request $request): Response
     {
-          
+          dd($programme);
         $new=false;
        
             if(!$programme){ 

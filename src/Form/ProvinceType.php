@@ -14,6 +14,7 @@ class ProvinceType extends AbstractType
     {
         $builder
             ->add('libelle')
+            ->add('Chef_lieu')
             ->add('createdAt')
             ->add('updatedAt')
             ->add('edit',SubmitType::class)

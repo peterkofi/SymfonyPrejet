@@ -23,18 +23,18 @@ class Province
     #[ORM\Column(type: 'string', length: 50)]
     private $libelle;
 
-    #[ORM\OneToMany(mappedBy: 'province', targetEntity: ZoneDeSante::class)]
-    private $no;
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'provinces')]
     private $createdBy;
 
     #[ORM\ManyToMany(targetEntity: Niveau::class, mappedBy: 'province')]
     private $niveaux;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $chefLieu;
+
+
     public function __construct()
     {
-        $this->no = new ArrayCollection();
         $this->niveaux = new ArrayCollection();
     }
 
@@ -51,40 +51,6 @@ class Province
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
-
-        return $this;
-    }
-    public function __toString()
-    {
-        return $this->libelle;
-    }
-
-    /**
-     * @return Collection<int, ZoneDeSante>
-     */
-    public function getNo(): Collection
-    {
-        return $this->no;
-    }
-
-    public function addNo(ZoneDeSante $no): self
-    {
-        if (!$this->no->contains($no)) {
-            $this->no[] = $no;
-            $no->setProvince($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNo(ZoneDeSante $no): self
-    {
-        if ($this->no->removeElement($no)) {
-            // set the owning side to null (unless already changed)
-            if ($no->getProvince() === $this) {
-                $no->setProvince(null);
-            }
-        }
 
         return $this;
     }
@@ -124,6 +90,23 @@ class Province
         if ($this->niveaux->removeElement($niveau)) {
             $niveau->removeProvince($this);
         }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->libelle;
+    }
+
+    public function getChefLieu(): ?string
+    {
+        return $this->chefLieu;
+    }
+
+    public function setChefLieu(?string $chefLieu): self
+    {
+        $this->chefLieu = $chefLieu;
 
         return $this;
     }

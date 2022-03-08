@@ -2,7 +2,7 @@
 {% extends "template.html.twig" %}
 
 {% block pageTitle %}
- Gestion Programme
+<h5 class="d-flex justify-content-center my-4 text-bold/">GESTION PROVINCE</h5>
 {% endblock %}
 
 
@@ -16,12 +16,58 @@
     <div class="alert alert-success" role="alert">  {{message}} </div>
 {% endfor %}
 
-<div class="d-flex justify-content-end"><a href="{{path('province.edit',{id:null})}}"> Ajout</a></div>
- <table class="table table-bordered mt-5">
-  <thead>
+
+<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('programme.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
+
+
+  
+<div class="form-group row">
+  <label for="selectProgramL" class="col-1 col-form-label" id="selectProgramL"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+  <div class="col-3">
+   <select name="selectProgram" id="selectProgram" class="form-select" style="margin-left: -40px;" name="states[]" multiple="multiple">
+  <option value="Tout" selected="selected">Tout</option>
+  {% for prov in province %}
+  <option value="{{prov.id}}" id="{{prov.id}}">{{prov.libelle}}</option>
+  {% endfor %}
+</select>
+
+{# 'page'=>$page,
+'nbre'=>$nbre, #}
+
+{% if isPaginated %}
+ <nav  style="position:absolute; right:80px; top:15px">
+  <ul class="pagination">
+    {% if page != 1 %}
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    
+    {% for i in range(1, nbrePage) %}
+      <li class="page-item"><a class="page-link" href="{{path('province.list',{page:i,nbre:nbre})}}">{{i}}</a></li>
+    {% endfor %}
+
+    {% if page != nbrePage %}
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav> 
+{% endif %}
+
+  </div>
+
+  <table class="table table-bordered table-striped mt-2">
+    <thead class="thead-dark" style="background-color:#6e707e52 ;">
     <tr>
       <th scope="col">N°</th>
       <th scope="col">province</th>
+      <th scope="col">Chef-lieu</th>
       <th scope="col">Operation</th>
     </tr>
   </thead>
@@ -30,38 +76,57 @@
     <tr>
       <th scope="row">{{prov.id}}</th>
       <td>{{ prov.libelle}}</td>
-      <td><a href="{{path('province.detail',{id:prov.id})}}">detail</a>
+      <td>{{ prov.chefLieu}}</td>
+      <td>
+        <a href="{{path('province.detail',{id:prov.id})}}" class='mx-2'> 
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <!-- <img src="{{asset('assets/icons/visibleBlue_96px.png')}}" width="15" height="15"/> -->
+        </a> 
+        <a href="{{path('province.delete',{id:prov.id})}}" class='mx-2'> 
+          <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
+        </a> 
+        <a href="{{path('province.edit',{id:prov.id})}}" class='mx-2'> 
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <!-- <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/> -->
+        </a>
+      </td>
+      {# <td><a href="{{path('province.detail',{id:prov.id})}}">detail</a>
           <a href="{{path('province.delete',{id:prov.id})}}">suppr</a>
           <a href="{{path('province.edit',{id:prov.id})}}">edit</a>
-      </td>
+      </td> #}
   
     </tr>
    {% endfor %}
   </tbody>
 </table>
- <div class='row mt-2'>
 
- <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
- 
- </div>
-    
+{% endblock %}
 
 
+{% block javasript %}
+  <script>
+    $(Document).ready(function(){
 
+      $("#selectProgram").select2();
+
+       $("#selectProgram").change(function(){
+        ident=$(this).val();
+        value=$("#"+ident).text();
+        
+        alert(value);
+
+        $.ajax({
+          type:"GET",
+          data:encodeURIComponent(ident),
+          url:"/province/find/",
+          success:function(data){
+              console.log(data);
+          }
+        })
+
+
+      });
+
+  }); 
+  </script>
 {% endblock %}

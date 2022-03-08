@@ -14,16 +14,41 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/province',)]
 class ProvinceController extends AbstractController
 {
-    #[Route('/', name: 'province.list')]
-    public function index(ManagerRegistry $doctrine): Response
+    #[Route('/find/{id}',name:'province.find')]
+    public function findProvince(Province $province){
+
+        dd($province);
+        return $this->renderView('province/find_province.html.twig',[
+            'province'=>$province
+        ]);
+    }
+    #[Route('/{page?1}/{nbre?10}', name: 'province.list')]
+    public function index(ManagerRegistry $doctrine, $page, $nbre): Response
     {
         $repository=$doctrine->getRepository(Province::class);
+        
+        
+        $nombreProvince=$repository->count([]);
 
-        $province=$repository->findAll();
+      //  $nbre=10;
+       
+        $nombrePage=ceil($nombreProvince/$nbre);
+
+      // $province=$repository->findAll();
+
+        $province=$repository->findBy([],[], $nbre, ($page-1)*$nbre);
+       
+        
         return $this->render('province/index.html.twig',[
-            'province'=>$province
+            'province'=>$province,
+            'isPaginated'=>true,
+            'page'=>$page,
+            'nbrePage'=>$nombrePage,
+            'nbre'=>$nbre
         ]); 
     }
+
+   
 
     #[Route('/{id<\d+>}', name: 'province.detail')]
     public function detailProvince(Province $province, ManagerRegistry $doctrine,$id): Response
@@ -75,7 +100,7 @@ class ProvinceController extends AbstractController
 
             $this->addFlash(type:'success',message: $message);
             
-            return $this->redirectToRoute('province.list');
+            return $this->redirectToRoute('province.edit');
         }else{
             return $this->render('province/create_programme.html.twig',[
                 'form' => $form->createView()
@@ -84,6 +109,8 @@ class ProvinceController extends AbstractController
         }
 
     }
+
+    
 
     #[Route('/delete/{id}', name: 'province.delete')]
     public function deleteProvince(Province $province, ManagerRegistry $doctrine,$id): Response
