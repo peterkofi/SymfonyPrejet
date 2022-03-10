@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 class NiveauType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -20,22 +21,6 @@ class NiveauType extends AbstractType
             ->add('description')
             ->add('createdAt')
             ->add('updatedAt')
-            ->add('categorie',EntityType::class,[
-                'expanded'=>false,
-                 'multiple'=>true,
-                 'class'=>Categorie::class,
-                 'required'=>false,
-                 'query_builder'=>function(EntityRepository $er){
-                       return $er->createQueryBuilder('c')
-                                 ->orderBy('c.libelle','ASC');
-
-                 },
-                       
-                 'attr'=>[
-                     'class'=>'select2'
-                 ]
- 
-             ])
             ->add('province',EntityType::class,[
                 'expanded'=>false,
                  'multiple'=>true,

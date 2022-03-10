@@ -2,7 +2,8 @@
 {% extends "template.html.twig" %}
 
 {% block pageTitle %}
- Gestion Programme
+<h5 class="d-flex justify-content-center my-4 text-bold/">VISUALISATION CATEGORIE</h5>
+<hr>
 {% endblock %}
 
 
@@ -16,54 +17,120 @@
     <div class="alert alert-success" role="alert">  {{message}} </div>
 {% endfor %}
 
-<div class="d-flex justity-content-end"><a href="{{path('categorie.edit',{id:null})}}"> Ajout</a></div>
+<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('categorie.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
 
- <table class="table table-bordered mt-5">
-  <thead>
+  
+<div class="form-group row">
+  <label for="selectProgramL" class="col-1 col-form-label" id="selectProgramL"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+  <div class="col-3">
+   <select name="selectProgram" id="selectProgram" class="form-select" style="margin-left: -40px;" >
+  <option value="Tout" selected="selected">Tout</option>
+  {% for cat in categorie %}
+  <option value="{{cat.id}}" id="{{cat.id}}">{{cat.libelle}}</option>
+  {% endfor %}
+</select>
+{% if isPaginated %}
+<nav  style="position:absolute; right:80px; top:15px">
+<ul class="pagination">
+  {% if page != 1 %}
+  <li class="page-item">
+    <a class="page-link" href="#" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% endif %}
+  
+  {% for i in range(1, nbrePage) %}
+    <li class="page-item"><a class="page-link" href="{{path('categorie.list',{page:i,nbre:nbre})}}">{{i}}</a></li>
+  {% endfor %}
+
+  {% if page != nbrePage %}
+  <li class="page-item">
+    <a class="page-link" href="#" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+</nav> 
+{% endif %}
+  </div>
+
+  <table class="table table-bordered table-striped mt-2">
+    <thead class="thead-dark" style="background-color:#6e707e52 ;">
     <tr>
       <th scope="col">N°</th>
+      <th scope="col">Niveau</th>
       <th scope="col">Categorie</th>
       <th scope="col">Description</th>
       <th scope="col">Operation</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="dataTable">
    {% for cat in categorie %}
     <tr>
       <th scope="row">{{cat.id}}</th>
+      <td>{{ cat.niveau}}</td>
       <td>{{ cat.libelle}}</td>
       <td>{{ cat.description}}</td>
-      <td><a href="{{path('categorie.detail',{id:cat.id})}}">detail</a>
-          <a href="{{path('categorie.delete',{id:cat.id})}}">suppr</a>
-          <a href="{{path('categorie.edit',{id:cat.id})}}">edit</a>
+      <td>
+          <a href="{{path('categorie.detail',{id:cat.id})}}"> 
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
+          <a href="{{path('categorie.delete',{id:cat.id})}}">  
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </a>
+          <a href="{{path('categorie.edit',{id:cat.id})}}"> 
+            <i class="fa fa-edit" aria-hidden="true"></i>
+          </a>
       </td>
+
     </tr>
    {% endfor %}
   </tbody>
 </table>
- <div class='row mt-2'>
 
- <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
- 
- </div>
+
+{% endblock %}
+
+{% block javasript %}
+<script>
+  $(Document).ready(function(){
+   
+/*   $("#selectProgramL").click(function(){
+     $("$selectProgram").change();
+   })
+
+*/
+      $("#selectProgram").change(function(){
+      ident=$(this).val();
+      province= $("#"+ident).text();
+     
+      $("#dataTable tr").filter(function(){
+       $(this).toggle($(this).text().indexOf(province) > -1);
+      });
+     /* $.ajax({
+        type:"GET",
+        data:encodeURIComponent(ident),
+        url:"/programme/",
+        success:function(data){
+            console.log(data);
+        }
+      })
+      */
+
+    });
+
+    $("#findAll").keyup(function(){
+      province=$(this).val().toLowerCase();
+      console.log(province);
+      
+      $("#dataTable tr").filter(function(){
+        $(this).toggle($(this).text().toLowerCase().indexOf(province) > -1);
+      })
+    });
     
 
-
-
+}); 
+</script>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use App\Traits\TimeStampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,15 +27,16 @@ class Niveau
     #[ORM\Column(type: 'text')]
     private $description;
 
-    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'niveau')]
-    private $categorie;
-
     #[ORM\ManyToMany(targetEntity: Province::class, inversedBy: 'niveaux')]
     private $province;
+
+    #[ORM\OneToMany(mappedBy: 'niveau', targetEntity: Categorie::class)]
+    private $categories;
 
     public function __construct()
     {
         $this->province = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,19 +68,6 @@ class Niveau
         return $this;
     }
 
-  
-
-    public function getCategorie(): ?Categorie
-    {
-        return $this->categorie;
-    }
-
-    public function setCategorie(?Categorie $categorie): self
-    {
-        $this->categorie = $categorie;
-
-        return $this;
-    }
     public function __toString()
     {
         return $this->libelle;
@@ -104,6 +93,36 @@ class Niveau
     public function removeProvince(Province $province): self
     {
         $this->province->removeElement($province);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Categorie>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categorie $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setNiveau($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categorie $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getNiveau() === $this) {
+                $category->setNiveau(null);
+            }
+        }
 
         return $this;
     }

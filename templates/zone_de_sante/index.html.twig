@@ -1,20 +1,145 @@
-<!DOCTYPE html>
 
-<title>Hello ZoneDeSanteController!</title>
+{% extends "template.html.twig" %}
+
+{% block pageTitle %}
+<h5 class="d-flex justify-content-center my-4 text-bold/">GESTION PROGAMME</h5>
+{% endblock %}
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{% for message in app.session.flashBag.get('error') %}
+    <div class="alert alert-danger" role="alert">  {{message}} </div>
+{% endfor %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/symfonyProject/my_project/src/Controller/ZoneDeSanteController.php'|file_link(0) }}">src/Controller/ZoneDeSanteController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/symfonyProject/my_project/templates/zone_de_sante/index.html.twig'|file_link(0) }}">templates/zone_de_sante/index.html.twig</a></code></li>
-    </ul>
-</div>
+{% for message in app.session.flashBag.get('success') %}
+    <div class="alert alert-success" role="alert">  {{message}} </div>
+{% endfor %}
+<!-- <i class="fa fa-phone" aria-hidden="false"></i> -->
+<!-- <i class="fa fa-language" aria-hidden="true"></i> -->
+<!-- 
+<i class="fa fa-trash"></i> -->
+<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('programme.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
+<!-- <div style="width: 250px;"> -->
+  
+  <div class="form-group row">
+    <label for="selectProgramL" class="col-1 col-form-label" id="selectProgramL"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+    <div class="col-3">
+     <select name="selectProgram" id="selectProgram" class="form-select" style="margin-left: -40px;" >
+    <option value="Tout" selected="selected">Tout</option>
+    {% for program in programme %}
+    <option value="{{program.id}}" id="{{program.id}}">{{program.libelle}}</option>
+    {% endfor %}
+  </select>
+  {% if isPaginated %}
+ <nav  style="position:absolute; right:80px; top:15px">
+  <ul class="pagination">
+    {% if page != 1 %}
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    
+    {% for i in range(1, nbrePage) %}
+      <li class="page-item"><a class="page-link" href="{{path('programme.list',{page:i,nbre:nbre})}}">{{i}}</a></li>
+    {% endfor %}
+
+    {% if page != nbrePage %}
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav> 
+{% endif %}
+    </div>
+ 
+<!-- </div>  -->
+
+<table class="table table-bordered table-striped mt-2">
+  <thead class="thead-dark" style="background-color:#6e707e52 ;">
+    <tr>
+      <th scope="col">N°</th>
+      <th scope="col">Programme</th>
+      <th scope="col">Description</th>
+      <th scope="col">Operation</th>
+    </tr>
+  </thead>
+  <tbody id="dataTable">
+   {% for program in programme %}
+    <tr>
+      <th scope="row">{{program.id}}</th>
+      <td>{{ program.libelle}}</td>
+      <td>{{ program.description}}</td>
+      <td>
+        <a href="{{path('programme.detail',{id:program.id})}}" class='mx-2'> 
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <!-- <img src="{{asset('assets/icons/visibleBlue_96px.png')}}" width="15" height="15"/> -->
+        </a> 
+        <a href="{{path('programme.delete',{id:program.id})}}" class='mx-2'> 
+          <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
+        </a> 
+        <a href="{{path('programme.edit',{id:program.id})}}" class='mx-2'> 
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <!-- <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/> -->
+        </a>
+      </td>
+      
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+ <div class='row mt-2'>
+<div class="d-flex justify-content-end">
+ 
+ </div>
+ </div>
+  
+
+{% endblock %}
+
+{% block javasript %}
+<script>
+  $(Document).ready(function(){
+   
+/*   $("#selectProgramL").click(function(){
+     $("$selectProgram").change();
+   })
+
+*/
+      $("#selectProgram").change(function(){
+      ident=$(this).val();
+      province= $("#"+ident).text();
+     
+      $("#dataTable tr").filter(function(){
+       $(this).toggle($(this).text().indexOf(province) > -1);
+      });
+     /* $.ajax({
+        type:"GET",
+        data:encodeURIComponent(ident),
+        url:"/programme/",
+        success:function(data){
+            console.log(data);
+        }
+      })
+      */
+
+    });
+
+    $("#findAll").keyup(function(){
+      province=$(this).val().toLowerCase();
+      console.log(province);
+      
+      $("#dataTable tr").filter(function(){
+        $(this).toggle($(this).text().toLowerCase().indexOf(province) > -1);
+      })
+    });
+    
+
+}); 
+</script>
 {% endblock %}

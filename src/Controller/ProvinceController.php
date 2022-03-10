@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Province;
 use App\Form\ProvinceType;
 use Doctrine\Persistence\ManagerRegistry;
-use Illuminate\Http\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,59 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProvinceController extends AbstractController
 {
     #[Route('/find/{id}',name:'province.find')]
-    public function findProvince(Province $province){
-
-        dd($province);
-        return $this->renderView('province/find_province.html.twig',[
-            'province'=>$province
-        ]);
-    }
-    #[Route('/{page?1}/{nbre?10}', name: 'province.list')]
-    public function index(ManagerRegistry $doctrine, $page, $nbre): Response
-    {
-        $repository=$doctrine->getRepository(Province::class);
-        
-        
-        $nombreProvince=$repository->count([]);
-
-      //  $nbre=10;
-       
-        $nombrePage=ceil($nombreProvince/$nbre);
-
-      // $province=$repository->findAll();
-
-        $province=$repository->findBy([],[], $nbre, ($page-1)*$nbre);
-       
-        
+    public function findProvince(Province $province): Response
+    {   
         return $this->render('province/index.html.twig',[
-            'province'=>$province,
-            'isPaginated'=>true,
-            'page'=>$page,
-            'nbrePage'=>$nombrePage,
-            'nbre'=>$nbre
+            'province',$province
         ]); 
     }
-
-   
-
-    #[Route('/{id<\d+>}', name: 'province.detail')]
-    public function detailProvince(Province $province, ManagerRegistry $doctrine,$id): Response
-    {
-        //  $entityManager=$doctrine->getRepository(Programme::class);
- 
-        //  $programme=$entityManager->find($id);
-       
-         if(!$province){
-             $this->addFlash('error'," ce province recherche n'existe pas");
-            return $this->redirectToRoute('province.list');
-        }
-        
-        return $this->render('province/detail.html.twig', [
-             'province'=>$province
-        ]);
-    }
-
-
     #[Route('/edit/{id?0}', name: 'province.edit')]
     public function addProvince(Province $province=null, ManagerRegistry $doctrine, Request $request): Response
     {
@@ -102,7 +54,7 @@ class ProvinceController extends AbstractController
             
             return $this->redirectToRoute('province.edit');
         }else{
-            return $this->render('province/create_programme.html.twig',[
+            return $this->render('province/create_province.html.twig',[
                 'form' => $form->createView()
             ]);
 
@@ -110,6 +62,53 @@ class ProvinceController extends AbstractController
 
     }
 
+    #[Route('/{page?1}/{nbre?10}', name: 'province.list')]
+    public function index(ManagerRegistry $doctrine, $page, $nbre): Response
+    {
+        $repository=$doctrine->getRepository(Province::class);
+        
+        
+        $nombreProvince=$repository->count([]);
+
+      //  $nbre=10;
+       
+        $nombrePage=ceil($nombreProvince/$nbre);
+
+      // $province=$repository->findAll();
+
+        $province=$repository->findBy([],[], $nbre, ($page-1)*$nbre);
+       
+        
+        return $this->render('province/index.html.twig',[
+            'province'=>$province,
+            'isPaginated'=>true,
+            'page'=>$page,
+            'nbrePage'=>$nombrePage,
+            'nbre'=>$nbre
+        ]); 
+    }
+
+   
+
+    #[Route('/{id<\d+>}', name: 'province.detail')]
+    public function detailProvince(Province $province, ManagerRegistry $doctrine,$id): Response
+    {
+        //  $entityManager=$doctrine->getRepository(Province::class);
+ 
+        //  $programme=$entityManager->find($id);
+       
+         if(!$province){
+             $this->addFlash('error'," ce province recherche n'existe pas");
+            return $this->redirectToRoute('province.list');
+        }
+        
+        return $this->render('province/detail.html.twig', [
+             'province'=>$province
+        ]);
+    }
+
+
+   
     
 
     #[Route('/delete/{id}', name: 'province.delete')]

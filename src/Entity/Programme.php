@@ -35,9 +35,13 @@ class Programme
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'programmes')]
     private $createdBy;
 
+    #[ORM\OneToMany(mappedBy: 'programme', targetEntity: Planification::class)]
+    private $planification;
+
     public function __construct()
     {
         $this->uniteFonctionnelles = new ArrayCollection();
+        $this->planification = new ArrayCollection();
     }
 
  
@@ -114,6 +118,28 @@ class Programme
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function addPlanification(Planification $plan): self
+    {
+        if (!$this->planification->contains($plan)) {
+            $this->planification[] = $plan;
+            $plan->setProgramme($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlanification(Planification $plan): self
+    {
+        if ($this->planification->removeElement($plan)) {
+            // set the owning side to null (unless already changed)
+            if ($plan->getProgramme() === $this) {
+                $plan->setProgramme(null);
+            }
+        }
 
         return $this;
     }

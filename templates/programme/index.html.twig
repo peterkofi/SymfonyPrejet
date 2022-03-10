@@ -2,7 +2,8 @@
 {% extends "template.html.twig" %}
 
 {% block pageTitle %}
-<h5 class="d-flex justify-content-center my-4 text-bold/">GESTION PROGAMME</h5>
+<h5 class="d-flex justify-content-center my-4 text-bold/">VISUALISATION PROGAMME</h5>
+<hr>
 {% endblock %}
 
 
@@ -69,7 +70,7 @@
       <th scope="col">Operation</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="dataTable">
    {% for program in programme %}
     <tr>
       <th scope="row">{{program.id}}</th>
@@ -78,14 +79,12 @@
       <td>
         <a href="{{path('programme.detail',{id:program.id})}}" class='mx-2'> 
           <i class="fa fa-eye" aria-hidden="true"></i>
-          <!-- <img src="{{asset('assets/icons/visibleBlue_96px.png')}}" width="15" height="15"/> -->
         </a> 
         <a href="{{path('programme.delete',{id:program.id})}}" class='mx-2'> 
-          <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
+          <i class="fa fa-trash" aria-hidden="true"></i>
         </a> 
         <a href="{{path('programme.edit',{id:program.id})}}" class='mx-2'> 
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-          <!-- <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/> -->
+          <i class="fa fa-edit" aria-hidden="true"></i>
         </a>
       </td>
       
@@ -103,30 +102,43 @@
 {% endblock %}
 
 {% block javasript %}
-  <script>
-    $(Document).ready(function(){
+<script>
+  $(Document).ready(function(){
+   
+/*   $("#selectProgramL").click(function(){
+     $("$selectProgram").change();
+   })
+
+*/
+      $("#selectProgram").change(function(){
+      ident=$(this).val();
+      province= $("#"+ident).text();
      
-     $("#selectProgramL").click(function(){
-       $("$selectProgram").change();
-     })
-        $("#selectProgram").change(function(){
-        ident=$(this).val();
-        value=$("#"+ident).text();
-        
-        alert(value);
-
-        $.ajax({
-          type:"GET",
-          data:encodeURIComponent(ident),
-          url:"/programme/",
-          success:function(data){
-              console.log(data);
-          }
-        })
-
-
+      $("#dataTable tr").filter(function(){
+       $(this).toggle($(this).text().indexOf(province) > -1);
       });
-  
-  }); 
-  </script>
+     /* $.ajax({
+        type:"GET",
+        data:encodeURIComponent(ident),
+        url:"/programme/",
+        success:function(data){
+            console.log(data);
+        }
+      })
+      */
+
+    });
+
+    $("#findAll").keyup(function(){
+      province=$(this).val().toLowerCase();
+      console.log(province);
+      
+      $("#dataTable tr").filter(function(){
+        $(this).toggle($(this).text().toLowerCase().indexOf(province) > -1);
+      })
+    });
+    
+
+}); 
+</script>
 {% endblock %}

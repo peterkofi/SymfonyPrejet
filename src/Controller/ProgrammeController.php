@@ -15,52 +15,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[Route('programme')]
 class ProgrammeController extends AbstractController
 {
-    #[Route('/{page?1}/{nbre?10}', name: 'programme.list')]
-    public function index(ManagerRegistry $doctrine, $page, $nbre): Response
-    {
-
-         $repository=$doctrine->getRepository(Programme::class);
-     
-         $nombreProgramme=$repository->count([]);
-
-      //   $nbre=10;
-        
-         $nombrePage=ceil($nombreProgramme/$nbre);
-
-      //  $programme=$repository->findAll();
-
-       $programme=$repository->findBy([],[], $nbre, ($page - 1)*$nbre);
-        return $this->render('programme/index.html.twig', [
-            'programme' => $programme,
-            'isPaginated'=>true,
-             'nbrPage'=>$nombrePage,
-             'page'=>$page,
-             'nbre'=>$nbre
-
-        ]);
-    }
-    #[Route('/{id<\d+>}', name: 'programme.detail')]
-    public function detailProgramme(Programme $programme, ManagerRegistry $doctrine,$id): Response
-    {
-        //  $entityManager=$doctrine->getRepository(Programme::class);
- 
-        //  $programme=$entityManager->find($id);
-       
-         if(!$programme){
-             $this->addFlash('error'," ce programme recherche n'existe pas");
-            return $this->redirectToRoute('programme.list');
-        }
-        
-        return $this->render('programme/detail.html.twig', [
-             'programme'=>$programme
-        ]);
-    }
-
-   
     #[Route('/edit/{id?0}', name: 'programme.edit')]
     public function addProgramme(Programme $programme=null, ManagerRegistry $doctrine,Request $request): Response
     {
-          dd($programme);
+     
         $new=false;
        
             if(!$programme){ 
@@ -103,10 +61,51 @@ class ProgrammeController extends AbstractController
         ]);
             }
 
-    //    $this->addFlash(type:'success',message:'ajout reussi !');
-   
-       
+    //    $this->addFlash(type:'success',message:'ajout reussi !');  
     }
+    #[Route('/{page?1}/{nbre?10}', name: 'programme.list')]
+    public function index(ManagerRegistry $doctrine, $page, $nbre): Response
+    {
+
+         $repository=$doctrine->getRepository(Programme::class);
+     
+         $nombreProgramme=$repository->count([]);
+
+      //   $nbre=10;
+        
+         $nombrePage=ceil($nombreProgramme/$nbre);
+
+      //  $programme=$repository->findAll();
+
+       $programme=$repository->findBy([],[], $nbre, ($page - 1)*$nbre);
+        return $this->render('programme/index.html.twig', [
+            'programme' => $programme,
+            'isPaginated'=>true,
+             'nbrePage'=>$nombrePage,
+             'page'=>$page,
+             'nbre'=>$nbre
+
+        ]);
+    }
+    #[Route('/{id<\d+>}', name: 'programme.detail')]
+    public function detailProgramme(Programme $programme, ManagerRegistry $doctrine,$id): Response
+    {
+        //  $entityManager=$doctrine->getRepository(Programme::class);
+ 
+        //  $programme=$entityManager->find($id);
+       
+         if(!$programme){
+             $this->addFlash('error'," ce programme recherche n'existe pas");
+            return $this->redirectToRoute('programme.list');
+        }
+        
+        return $this->render('programme/detail.html.twig', [
+             'programme'=>$programme
+        ]);
+    }
+
+   
+   
 
     // #[Route('/add/{libelle}/{description}', name: 'programme.addParam')]
     // public function addParamProgramme(ManagerRegistry $doctrine,$libelle,$description): RedirectResponse

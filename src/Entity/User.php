@@ -38,12 +38,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: UniteFonctionnelle::class)]
     private $uniteFonctionnelles;
 
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Planification::class)]
+    private $planifications;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Action::class)]
+    private $actions;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: SousAction::class)]
+    private $sousActions;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: SousActivite::class)]
+    private $sousActivites;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Activite::class)]
+    private $activites;
+
+
     public function __construct()
     {
         $this->programmes = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->provinces = new ArrayCollection();
         $this->uniteFonctionnelles = new ArrayCollection();
+        $this->planifications = new ArrayCollection();
+        $this->actions = new ArrayCollection();
+        $this->sousActions = new ArrayCollection();
+        $this->sousActivites = new ArrayCollection();
+        $this->activites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -239,4 +260,155 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+
+    /**
+     * @return Collection<int, Planification>
+     */
+    public function getPlanifications(): Collection
+    {
+        return $this->planifications;
+    }
+
+    public function addPlanification(Planification $planification): self
+    {
+        if (!$this->planifications->contains($planification)) {
+            $this->planifications[] = $planification;
+            $planification->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlanification(Planification $planification): self
+    {
+        if ($this->planifications->removeElement($planification)) {
+            // set the owning side to null (unless already changed)
+            if ($planification->getCreatedBy() === $this) {
+                $planification->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Action>
+     */
+    public function getActions(): Collection
+    {
+        return $this->actions;
+    }
+
+    public function addAction(Action $action): self
+    {
+        if (!$this->actions->contains($action)) {
+            $this->actions[] = $action;
+            $action->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAction(Action $action): self
+    {
+        if ($this->actions->removeElement($action)) {
+            // set the owning side to null (unless already changed)
+            if ($action->getCreatedBy() === $this) {
+                $action->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SousAction>
+     */
+    public function getSousActions(): Collection
+    {
+        return $this->sousActions;
+    }
+
+    public function addSousAction(SousAction $sousAction): self
+    {
+        if (!$this->sousActions->contains($sousAction)) {
+            $this->sousActions[] = $sousAction;
+            $sousAction->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSousAction(SousAction $sousAction): self
+    {
+        if ($this->sousActions->removeElement($sousAction)) {
+            // set the owning side to null (unless already changed)
+            if ($sousAction->getCreatedBy() === $this) {
+                $sousAction->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SousActivite>
+     */
+    public function getSousActivites(): Collection
+    {
+        return $this->sousActivites;
+    }
+
+    public function addSousActivite(SousActivite $sousActivite): self
+    {
+        if (!$this->sousActivites->contains($sousActivite)) {
+            $this->sousActivites[] = $sousActivite;
+            $sousActivite->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSousActivite(SousActivite $sousActivite): self
+    {
+        if ($this->sousActivites->removeElement($sousActivite)) {
+            // set the owning side to null (unless already changed)
+            if ($sousActivite->getCreatedBy() === $this) {
+                $sousActivite->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Activite>
+     */
+    public function getActivites(): Collection
+    {
+        return $this->activites;
+    }
+
+    public function addActivite(Activite $activite): self
+    {
+        if (!$this->activites->contains($activite)) {
+            $this->activites[] = $activite;
+            $activite->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivite(Activite $activite): self
+    {
+        if ($this->activites->removeElement($activite)) {
+            // set the owning side to null (unless already changed)
+            if ($activite->getCreatedBy() === $this) {
+                $activite->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

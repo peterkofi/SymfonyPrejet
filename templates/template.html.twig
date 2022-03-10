@@ -18,14 +18,15 @@
     <body>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html" style='letter-spacing:20px;'>PAO</a>
+            <a class="navbar-brand ml-5" href="index.html" style='padding-left:50px; letter-spacing:20px; border-bottom:1px solid rgb(48, 47, 47);'>PAO</a>
+            
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." id="findAll" aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-secondary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                 </div>
             </form>
             <!-- Navbar-->
@@ -60,9 +61,22 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{path('niveau.list')}}">Niveau</a>
                                     <a class="nav-link" href="{{path('categorie.list')}}">Catégorie Structure</a>
                                     <a class="nav-link" href="{{path('unitefonctionnelle.list')}}">Unité fonctionnelle</a>   
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" href="{{path('programme.list')}}" data-toggle="collapse" data-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Entité De Planification
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{path('planification.list')}}">Planification</a>
+                                    <a class="nav-link" href="{{path('action.list')}}">Action</a>   
+                                    <a class="nav-link" href="{{path('sous_action.list')}}">Sous Action</a>   
+                                    <a class="nav-link" href="{{path('activite.list')}}">Activité</a>   
+                                    <a class="nav-link" href="{{path('sous_activite.list')}}">Sous Activité</a>   
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="{{path('programme.list')}}" data-toggle="collapse" data-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts">
@@ -73,6 +87,7 @@
                             <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{path('province.list')}}">Province</a>
+                                    <a class="nav-link" href="{{path('niveau.list')}}">Niveau</a>
                                     <a class="nav-link" href="{{path('programme.list')}}">Programme</a>
                                 </nav>
                             </div>

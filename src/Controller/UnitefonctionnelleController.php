@@ -13,55 +13,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use function PHPUnit\Framework\at;
 
 #[Route('/unitefonctionnelle')]
 class UnitefonctionnelleController extends AbstractController
 {
-    #[Route('/', name: 'unitefonctionnelle.list')]
-    public function index(ManagerRegistry $doctrine): Response
-    {
-       
-        $repository=$doctrine->getRepository(UniteFonctionnelle::class);
-     
-        $nombreunitefonctionnelle=$repository->count([]);
-
-        $nbre=10;
-       
-        $nombrePage=ceil($nombreunitefonctionnelle/$nbre);
-
-       $unitefonctionnelle=$repository->findAll();
-
-        return $this->render('unitefonctionnelle/index.html.twig', [
-            'unitefonctionnelle' => $unitefonctionnelle,
-
-            'isPaginated'=>true,
-             'nombrePage'=>$nombrePage,
-            // 'page'=>$page,
-             'nombreElent'=>$nbre
-
-        ],);
-    }
-
-    #[Route('/{id<\d+>}', name: 'unitefonctionnelle.detail')]
-    public function detailUniteFonctionnelle(ManagerRegistry $doctrine,$id): Response
-    {
-         $entityManager=$doctrine->getRepository(UniteFonctionnelle::class);
- 
-         $uniteFonctionnelle=$entityManager->find($id);
-       
-         if(!$uniteFonctionnelle){
-             $this->addFlash('error',"l'unité fonctionnelle rechercheé n'existe pas");
-            return $this->redirectToRoute('unitefonctionnelle.list');
-        }
-        
-        return $this->render('unitefonctionnelle/detail.html.twig', [
-             'uniteFonctionnelle'=>$uniteFonctionnelle
-        ]);
-    }
-
-    #[Route('/edit/{id?0}', name: 'unitefonctionnelle.add')]
-    public function addUniteFonctionnelle(UniteFonctionnelle $uniteFonctionnelle, ManagerRegistry $doctrine, Request $request): Response
+    #[Route('/edit/{id?0}', name: 'unitefonctionnelle.edit')]
+    public function addUniteFonctionnelle(UniteFonctionnelle $uniteFonctionnelle=null, ManagerRegistry $doctrine, Request $request): Response
     {
        
         $new=false;
@@ -105,6 +62,47 @@ class UnitefonctionnelleController extends AbstractController
         }
         
     }
+    #[Route('/{page?1}/{nbre?10}', name: 'unitefonctionnelle.list')]
+    public function index(ManagerRegistry $doctrine,$page,$nbre): Response
+    {
+       
+        $repository=$doctrine->getRepository(UniteFonctionnelle::class);
+     
+        $nombreunitefonctionnelle=$repository->count([]);
+
+        $nbre=10;
+       
+        $nombrePage=ceil($nombreunitefonctionnelle/$nbre);
+
+        $unitefonctionnelle=$repository->findBy([],[], $nbre, ($page-1)*$nbre);
+
+        return $this->render('unitefonctionnelle/index.html.twig', [
+            'unitefonctionnelle' => $unitefonctionnelle,
+            'isPaginated'=>true,
+            'page'=>$page,
+            'nbrePage'=>$nombrePage,
+            'nbre'=>$nbre
+        ]);
+    }
+
+    #[Route('/{id<\d+>}', name: 'unitefonctionnelle.detail')]
+    public function detailUniteFonctionnelle(ManagerRegistry $doctrine,$id): Response
+    {
+         $entityManager=$doctrine->getRepository(UniteFonctionnelle::class);
+ 
+         $uniteFonctionnelle=$entityManager->find($id);
+       
+         if(!$uniteFonctionnelle){
+             $this->addFlash('error',"l'unité fonctionnelle rechercheé n'existe pas");
+            return $this->redirectToRoute('unitefonctionnelle.list');
+        }
+        
+        return $this->render('unitefonctionnelle/detail.html.twig', [
+             'uniteFonctionnelle'=>$uniteFonctionnelle
+        ]);
+    }
+
+ 
 
     // #[Route('/add/{libelle}/{description}', name: 'unitefonctionnelle.addParam')]
     // public function addUniteFonctionnelleParam(ManagerRegistry $doctrine,$libelle,$description): RedirectResponse

@@ -2,8 +2,10 @@
 {% extends "template.html.twig" %}
 
 {% block pageTitle %}
- Gestion Programme
+<h5 class="d-flex justify-content-center my-4 text-bold/">EDITION SOUS ACTIVITE</h5>
+<hr>
 {% endblock %}
+
 
 
 {% block body %}
@@ -17,8 +19,11 @@
 {% endfor %}
 
 
-{{form(form)}}
- 
+
+
+    {{form(form,{'attr':{'novalidate':'novalidate'}})}}
+
+
  </div>
     
 

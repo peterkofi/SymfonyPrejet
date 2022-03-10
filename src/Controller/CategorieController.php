@@ -14,36 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategorieController extends AbstractController
 {
-    #[Route('/', name: 'categorie.list')]
-    public function index(ManagerRegistry $doctrine): Response
-    {
-        $repository=$doctrine->getRepository(categorie::class);
-
-        $categorie=$repository->findAll();
-        return $this->render('categorie/index.html.twig',[
-            'categorie'=>$categorie
-        ]);
-    }
-    #[Route('/{id<\d+>}', name: 'categorie.detail')]
-    public function detailProgramme(Categorie $categorie, ManagerRegistry $doctrine,$id): Response
-    {
-        //  $entityManager=$doctrine->getRepository(Programme::class);
- 
-        //  $programme=$entityManager->find($id);
-       
-         if(!$categorie){
-             $this->addFlash('error'," ce categorie recherche n'existe pas");
-            return $this->redirectToRoute('categorie.list');
-        }
-        
-        return $this->render('Categorie/detail.html.twig', [
-             'categorie'=>$categorie
-        ]);
-    }
-
-
     #[Route('/edit/{id?0}', name: 'categorie.edit')]
-    public function addProgramme(Categorie $categorie=null, ManagerRegistry $doctrine,Request $request): Response
+    public function addCategorie(Categorie $categorie=null, ManagerRegistry $doctrine,Request $request): Response
     {
           
         $new=false;
@@ -90,6 +62,44 @@ class CategorieController extends AbstractController
    
        
     }
+    #[Route('/{page?1}/{nbre?10}', name: 'categorie.list')]
+    public function index(ManagerRegistry $doctrine, $page, $nbre): Response
+    {
+        $repository=$doctrine->getRepository(categorie::class);
+
+        $nombreCategorie=$repository->count([]);
+
+        $nombrePage=ceil($nombreCategorie/$nbre);
+
+        $categorie=$repository->findBy([],[], $nbre, ($page - 1)*$nbre);
+
+        return $this->render('categorie/index.html.twig',[
+            'categorie'=>$categorie,
+            'isPaginated'=>true,
+            'nbrePage'=>$nombrePage,
+            'page'=>$page,
+            'nbre'=>$nbre
+        ]);
+    }
+    #[Route('/{id<\d+>}', name: 'categorie.detail')]
+    public function detailCategorie(Categorie $categorie, ManagerRegistry $doctrine,$id): Response
+    {
+        //  $entityManager=$doctrine->getRepository(Categorie::class);
+ 
+        //  $programme=$entityManager->find($id);
+       
+         if(!$categorie){
+             $this->addFlash('error'," ce categorie recherche n'existe pas");
+            return $this->redirectToRoute('categorie.list');
+        }
+        
+        return $this->render('Categorie/detail.html.twig', [
+             'categorie'=>$categorie
+        ]);
+    }
+
+
+   
 
     // #[Route('/add/{libelle}/{description}', name: 'categorie.addParam')]
     // public function addParamCategorie(ManagerRegistry $doctrine, $libelle, $description): Response
@@ -108,10 +118,10 @@ class CategorieController extends AbstractController
     //     return $this->render('categorie/index.html.twig');
     // }
     #[Route('/delete/{id}', name: 'categorie.delete')]
-    public function deleteProgramme(Categorie $categorie, ManagerRegistry $doctrine,$id): Response
+    public function deleteCategorie(Categorie $categorie, ManagerRegistry $doctrine,$id): Response
     {
        
-        //   $entityManager=$doctrine->getRepository(Programme::class);
+        //   $entityManager=$doctrine->getRepository(Categorie::class);
  
         //   $programme=$entityManager->find($id);
 

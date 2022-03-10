@@ -31,15 +31,14 @@ class Categorie
     #[ORM\Column(type: 'text')]
     private $description;
 
-    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Niveau::class)]
-    private $niveau;
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'categories')]
     private $createdBy;
 
+    #[ORM\ManyToOne(targetEntity: Niveau::class, inversedBy: 'categories')]
+    private $niveau;
+
     public function __construct()
     {
-         $this->niveau = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,35 +70,6 @@ class Categorie
         return $this;
     }
 
-    /**
-     * @return Collection<int, Niveau>
-     */
-    public function getNiveau(): Collection
-    {
-        return $this->niveau;
-    }
-
-    public function addNiveau(Niveau $niveau): self
-    {
-        if (!$this->niveau->contains($niveau)) {
-            $this->niveau[] = $niveau;
-            $niveau->setCategorie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNiveau(Niveau $niveau): self
-    {
-        if ($this->niveau->removeElement($niveau)) {
-            // set the owning side to null (unless already changed)
-            if ($niveau->getCategorie() === $this) {
-                $niveau->setCategorie(null);
-            }
-        }
-
-        return $this;
-    }
     public function __toString()
     {
         return $this->libelle;
@@ -113,6 +83,18 @@ class Categorie
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getNiveau(): ?Niveau
+    {
+        return $this->niveau;
+    }
+
+    public function setNiveau(?Niveau $niveau): self
+    {
+        $this->niveau = $niveau;
 
         return $this;
     }

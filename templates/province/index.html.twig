@@ -2,7 +2,8 @@
 {% extends "template.html.twig" %}
 
 {% block pageTitle %}
-<h5 class="d-flex justify-content-center my-4 text-bold/">GESTION PROVINCE</h5>
+<h5 class="d-flex justify-content-center my-4 text-bold/">VISUALISATION PROVINCE</h5>
+<hr>
 {% endblock %}
 
 
@@ -15,26 +16,24 @@
 {% for message in app.session.flashBag.get('success') %}
     <div class="alert alert-success" role="alert">  {{message}} </div>
 {% endfor %}
+<!-- <i class="fa fa-phone" aria-hidden="false"></i> -->
+<!-- <i class="fa fa-language" aria-hidden="true"></i> -->
+<!-- 
+<i class="fa fa-trash"></i> -->
 
+<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('province.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
+<!-- <div style="width: 250px;"> -->
 
-<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('programme.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
-
-
-  
-<div class="form-group row">
-  <label for="selectProgramL" class="col-1 col-form-label" id="selectProgramL"><i class="fa fa-calendar" aria-hidden="true"></i></label>
-  <div class="col-3">
-   <select name="selectProgram" id="selectProgram" class="form-select" style="margin-left: -40px;" name="states[]" multiple="multiple">
-  <option value="Tout" selected="selected">Tout</option>
-  {% for prov in province %}
-  <option value="{{prov.id}}" id="{{prov.id}}">{{prov.libelle}}</option>
-  {% endfor %}
-</select>
-
-{# 'page'=>$page,
-'nbre'=>$nbre, #}
-
-{% if isPaginated %}
+  <div class="form-group row">
+    <label for="selectProvinceL" class="col-1 col-form-label" id="selectProvinceL"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+    <div class="col-3">
+     <select name="selectProvince" id="selectProvince" class="form-select" style="margin-left: -40px;" >
+    <option value="Tout" selected="selected">Tout</option>
+    {% for prov in province %}
+    <option value="{{prov.id}}" id="{{prov.id}}">{{prov.libelle}}</option>
+    {% endfor %}
+  </select>
+  {% if isPaginated %}
  <nav  style="position:absolute; right:80px; top:15px">
   <ul class="pagination">
     {% if page != 1 %}
@@ -59,19 +58,20 @@
   </ul>
 </nav> 
 {% endif %}
+    </div>
+ 
+<!-- </div>  -->
 
-  </div>
-
-  <table class="table table-bordered table-striped mt-2">
-    <thead class="thead-dark" style="background-color:#6e707e52 ;">
+<table class="table table-bordered table-striped mt-2">
+  <thead class="thead-dark" style="background-color:#6e707e52 ;">
     <tr>
       <th scope="col">N°</th>
-      <th scope="col">province</th>
+      <th scope="col">Province</th>
       <th scope="col">Chef-lieu</th>
       <th scope="col">Operation</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="dataTable">
    {% for prov in province %}
     <tr>
       <th scope="row">{{prov.id}}</th>
@@ -79,54 +79,69 @@
       <td>{{ prov.chefLieu}}</td>
       <td>
         <a href="{{path('province.detail',{id:prov.id})}}" class='mx-2'> 
-          <i class="fa fa-eye" aria-hidden="true"></i>
+          <i class="fa fa-eye"></i>
           <!-- <img src="{{asset('assets/icons/visibleBlue_96px.png')}}" width="15" height="15"/> -->
         </a> 
         <a href="{{path('province.delete',{id:prov.id})}}" class='mx-2'> 
-          <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
+          <i class="fa fa-trash" ></i>
         </a> 
         <a href="{{path('province.edit',{id:prov.id})}}" class='mx-2'> 
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <i class="fa fa-edit" ></i>
           <!-- <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/> -->
         </a>
       </td>
-      {# <td><a href="{{path('province.detail',{id:prov.id})}}">detail</a>
-          <a href="{{path('province.delete',{id:prov.id})}}">suppr</a>
-          <a href="{{path('province.edit',{id:prov.id})}}">edit</a>
-      </td> #}
-  
+      
     </tr>
    {% endfor %}
   </tbody>
 </table>
+ <div class='row mt-2'>
+<div class="d-flex justify-content-end">
+ 
+ </div>
+ </div>
+  
 
 {% endblock %}
-
 
 {% block javasript %}
   <script>
     $(Document).ready(function(){
+     
+  /*   $("#selectProvinceL").click(function(){
+       $("$selectProvince").change();
+     })
 
-      $("#selectProgram").select2();
-
-       $("#selectProgram").change(function(){
+  */
+        $("#selectProvince").change(function(){
         ident=$(this).val();
-        value=$("#"+ident).text();
-        
-        alert(value);
-
-        $.ajax({
+        province= $("#"+ident).text();
+       
+        $("#dataTable tr").filter(function(){
+         $(this).toggle($(this).text().indexOf(province) > -1);
+        });
+       /* $.ajax({
           type:"GET",
           data:encodeURIComponent(ident),
-          url:"/province/find/",
+          url:"/programme/",
           success:function(data){
               console.log(data);
           }
         })
-
+        */
 
       });
 
+      $("#findAll").keyup(function(){
+        province=$(this).val().toLowerCase();
+        console.log(province);
+        
+        $("#dataTable tr").filter(function(){
+          $(this).toggle($(this).text().toLowerCase().indexOf(province) > -1);
+        })
+      });
+      
+  
   }); 
   </script>
 {% endblock %}

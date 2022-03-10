@@ -2,8 +2,10 @@
 {% extends "template.html.twig" %}
 
 {% block pageTitle %}
-<h5 class="d-flex justify-content-center my-3">Ajout Categorie </h5>
+<h5 class="d-flex justify-content-center my-3">EDITION CATEGORIE </h5>
+<hr>
 {% endblock %}
+
 
 
 {% block body %}
@@ -24,4 +26,13 @@
 
 
 
+{% endblock %}
+
+{% block javasript %}
+<script>
+    $(document).ready(function(){
+        $('.select2').select2();
+    });
+
+</script>
 {% endblock %}
