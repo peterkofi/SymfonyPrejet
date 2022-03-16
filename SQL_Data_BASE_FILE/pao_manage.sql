@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 10 mars 2022 à 17:53
+-- Généré le : mer. 16 mars 2022 à 03:51
 -- Version du serveur :  8.0.21
 -- Version de PHP : 8.0.16
 
@@ -34,10 +34,19 @@ CREATE TABLE IF NOT EXISTS `action` (
   `libelle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
   `created_by_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_47CC8C92E65142C2` (`planification_id`),
   KEY `IDX_47CC8C92B03A8386` (`created_by_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `action`
+--
+
+INSERT INTO `action` (`id`, `planification_id`, `libelle`, `description`, `created_by_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Action 1', 'Première action pour la planification du programme général', NULL, '2022-03-16 01:21:36', '2022-03-16 01:21:36');
 
 -- --------------------------------------------------------
 
@@ -52,10 +61,19 @@ CREATE TABLE IF NOT EXISTS `activite` (
   `libelle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
   `created_by_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_B8755515863B1B7A` (`sous_action_id`),
   KEY `IDX_B8755515B03A8386` (`created_by_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `activite`
+--
+
+INSERT INTO `activite` (`id`, `sous_action_id`, `libelle`, `description`, `created_by_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Sous Activité 1', 'Première Sous activité', 5, '2022-03-16 03:20:33', '2022-03-16 03:20:33');
 
 -- --------------------------------------------------------
 
@@ -68,6 +86,8 @@ CREATE TABLE IF NOT EXISTS `agent_financement` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `categorie` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -105,18 +125,6 @@ INSERT INTO `categorie` (`id`, `libelle`, `description`, `created_at`, `updated_
 -- --------------------------------------------------------
 
 --
--- Structure de la table `chef_lieu`
---
-
-DROP TABLE IF EXISTS `chef_lieu`;
-CREATE TABLE IF NOT EXISTS `chef_lieu` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `configuration_system`
 --
 
@@ -124,6 +132,8 @@ DROP TABLE IF EXISTS `configuration_system`;
 CREATE TABLE IF NOT EXISTS `configuration_system` (
   `id` int NOT NULL AUTO_INCREMENT,
   `taux` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -174,7 +184,37 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20220310130611', '2022-03-10 13:06:22', 5620),
 ('DoctrineMigrations\\Version20220310150637', '2022-03-10 15:07:11', 10889),
 ('DoctrineMigrations\\Version20220310151933', '2022-03-10 15:19:53', 9141),
-('DoctrineMigrations\\Version20220310161520', '2022-03-10 16:21:05', 7092);
+('DoctrineMigrations\\Version20220310161520', '2022-03-10 16:21:05', 7092),
+('DoctrineMigrations\\Version20220312020312', '2022-03-12 02:03:59', 16923),
+('DoctrineMigrations\\Version20220312031359', '2022-03-12 03:14:59', 5644),
+('DoctrineMigrations\\Version20220312032612', '2022-03-12 03:26:29', 11756),
+('DoctrineMigrations\\Version20220315072411', '2022-03-15 07:25:38', 16604),
+('DoctrineMigrations\\Version20220315171341', '2022-03-15 17:16:16', 3429),
+('DoctrineMigrations\\Version20220315172126', '2022-03-15 17:22:25', 4368),
+('DoctrineMigrations\\Version20220315173124', '2022-03-15 17:31:36', 263),
+('DoctrineMigrations\\Version20220315173559', '2022-03-15 17:36:33', 2788),
+('DoctrineMigrations\\Version20220315173817', '2022-03-15 17:38:42', 5652),
+('DoctrineMigrations\\Version20220315225051', '2022-03-15 22:51:27', 13243),
+('DoctrineMigrations\\Version20220316014157', '2022-03-16 01:43:02', 19832),
+('DoctrineMigrations\\Version20220316021159', '2022-03-16 02:13:16', 8128),
+('DoctrineMigrations\\Version20220316021857', '2022-03-16 02:28:38', 2644),
+('DoctrineMigrations\\Version20220316024158', '2022-03-16 02:42:25', 4129);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fonction_unite_fonctionnelle`
+--
+
+DROP TABLE IF EXISTS `fonction_unite_fonctionnelle`;
+CREATE TABLE IF NOT EXISTS `fonction_unite_fonctionnelle` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `libelle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -189,17 +229,19 @@ CREATE TABLE IF NOT EXISTS `niveau` (
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `created_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_4BDFF36BB03A8386` (`created_by_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `niveau`
 --
 
-INSERT INTO `niveau` (`id`, `libelle`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'Niveau central', 'Première Niveau', '2022-03-10 04:37:56', '2022-03-10 11:17:32'),
-(2, 'Niveau intermédiaire', 'deuxième niveau', '2022-03-10 09:47:25', '2022-03-10 09:48:17'),
-(3, 'Niveau périphérique', 'troisième niveau', '2022-03-10 09:49:57', '2022-03-10 09:49:57');
+INSERT INTO `niveau` (`id`, `libelle`, `description`, `created_at`, `updated_at`, `created_by_id`) VALUES
+(1, 'Niveau central', 'Première Niveau', '2022-03-10 04:37:56', '2022-03-10 11:17:32', NULL),
+(2, 'Niveau intermédiaire', 'deuxième niveau', '2022-03-10 09:47:25', '2022-03-10 09:48:17', NULL),
+(3, 'Niveau périphérique', 'troisième niveau', '2022-03-10 09:49:57', '2022-03-10 09:49:57', NULL);
 
 -- --------------------------------------------------------
 
@@ -238,10 +280,19 @@ CREATE TABLE IF NOT EXISTS `planification` (
   `programme_id` int DEFAULT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_by_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_FFC02E1B62BB7AEE` (`programme_id`),
   KEY `IDX_FFC02E1BB03A8386` (`created_by_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `planification`
+--
+
+INSERT INTO `planification` (`id`, `programme_id`, `description`, `created_by_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'La Planification Sur L\'administration Generale', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -333,10 +384,19 @@ CREATE TABLE IF NOT EXISTS `sous_action` (
   `libelle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
   `created_by_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_97D37E659D32F035` (`action_id`),
   KEY `IDX_97D37E65B03A8386` (`created_by_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `sous_action`
+--
+
+INSERT INTO `sous_action` (`id`, `action_id`, `libelle`, `description`, `created_by_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Sous Action 1', 'première sous activité', 5, '2022-03-16 03:07:18', '2022-03-16 03:30:24');
 
 -- --------------------------------------------------------
 
@@ -353,9 +413,57 @@ CREATE TABLE IF NOT EXISTS `sous_activite` (
   `devise` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_by_id` int DEFAULT NULL,
   `activite_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_B03B6140B03A8386` (`created_by_id`),
   KEY `IDX_B03B61409B0F88B1` (`activite_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `structure`
+--
+
+DROP TABLE IF EXISTS `structure`;
+CREATE TABLE IF NOT EXISTS `structure` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `structure_de_reference_id` int DEFAULT NULL,
+  `categorie_id` int DEFAULT NULL,
+  `type_de_structure` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_by_id` int NOT NULL,
+  `libelle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_6F0137EA5B7B45C4` (`structure_de_reference_id`),
+  KEY `IDX_6F0137EABCF5E72D` (`categorie_id`),
+  KEY `IDX_6F0137EAB03A8386` (`created_by_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `structure`
+--
+
+INSERT INTO `structure` (`id`, `created_at`, `updated_at`, `structure_de_reference_id`, `categorie_id`, `type_de_structure`, `created_by_id`, `libelle`, `description`) VALUES
+(1, '2022-03-16 02:49:01', '2022-03-16 02:49:01', NULL, 2, 'Aucun', 5, 'Structure 1', 'Première structure'),
+(2, '2022-03-16 03:03:57', '2022-03-16 03:03:57', 1, 5, 'Enfant', 5, 'Structure 2', 'deuxième structure');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `type_validation_uf`
+--
+
+DROP TABLE IF EXISTS `type_validation_uf`;
+CREATE TABLE IF NOT EXISTS `type_validation_uf` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `type_de_validation` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_by_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_DAB3C314B03A8386` (`created_by_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -374,19 +482,36 @@ CREATE TABLE IF NOT EXISTS `unite_fonctionnelle` (
   `updated_at` datetime DEFAULT NULL,
   `programme_id` int NOT NULL,
   `created_by_id` int DEFAULT NULL,
+  `zone_de_sante_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_5665589BCF5E72D` (`categorie_id`),
   KEY `IDX_566558962BB7AEE` (`programme_id`),
-  KEY `IDX_5665589B03A8386` (`created_by_id`)
+  KEY `IDX_5665589B03A8386` (`created_by_id`),
+  KEY `IDX_566558915CFF4BA` (`zone_de_sante_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `unite_fonctionnelle`
 --
 
-INSERT INTO `unite_fonctionnelle` (`id`, `categorie_id`, `libelle`, `description`, `created_at`, `updated_at`, `programme_id`, `created_by_id`) VALUES
-(1, 1, 'DRH', 'Unité DRH', '2022-03-05 07:25:21', '2022-03-05 07:25:21', 1, NULL),
-(2, 1, 'DEP', 'Unité fonctionnelle pour le departement', '2022-03-05 18:06:01', '2022-03-05 18:06:01', 2, NULL);
+INSERT INTO `unite_fonctionnelle` (`id`, `categorie_id`, `libelle`, `description`, `created_at`, `updated_at`, `programme_id`, `created_by_id`, `zone_de_sante_id`) VALUES
+(1, 1, 'DRH', 'Unité DRH', '2022-03-05 07:25:21', '2022-03-05 07:25:21', 1, NULL, NULL),
+(2, 1, 'DEP', 'Unité fonctionnelle pour le departement', '2022-03-05 18:06:01', '2022-03-05 18:06:01', 2, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `unite_fonctionnelle_type_validation_uf`
+--
+
+DROP TABLE IF EXISTS `unite_fonctionnelle_type_validation_uf`;
+CREATE TABLE IF NOT EXISTS `unite_fonctionnelle_type_validation_uf` (
+  `unite_fonctionnelle_id` int NOT NULL,
+  `type_validation_uf_id` int NOT NULL,
+  PRIMARY KEY (`unite_fonctionnelle_id`,`type_validation_uf_id`),
+  KEY `IDX_E07BB1D8EBB88846` (`unite_fonctionnelle_id`),
+  KEY `IDX_E07BB1D8CFD1A8FD` (`type_validation_uf_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -400,6 +525,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
   `roles` json NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -408,12 +535,40 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
-(5, 'peterkofi74@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$TsJ0dHHNuIZMonnUQe6t7.xav0d.yRI9szxmS7bNHDqGHgiGXHBNK'),
-(6, 'crispin@gmail.com', '[]', '$2y$13$t7aTXozViiwvWiDviqYNlu9X3ZTvneOA6dIcwguDQfBMZjgLO6aHm'),
-(7, 'elie@gmail.com', '[]', '$2y$13$wiheh8Wj8DbclSrG92uxaeJqZBZpMZf2BXPxCcEnRSMXz2/u/0I.q'),
-(8, 'josue@gmail.com', '[]', '$2y$13$bGvCiclPmXDM0WemLl41t.94GNHEkoIxBJjikpyreF.aznYot2gaW'),
-(9, 'lord@gmail.com', '[]', '$2y$13$AY/mHENi.oW/BMIkGjLaM.Qg3F4/Aj75hABc73c0BlRGFD7TICM0S');
+INSERT INTO `user` (`id`, `email`, `roles`, `password`, `created_at`, `updated_at`) VALUES
+(5, 'peterkofi74@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$TsJ0dHHNuIZMonnUQe6t7.xav0d.yRI9szxmS7bNHDqGHgiGXHBNK', NULL, NULL),
+(6, 'crispin@gmail.com', '[]', '$2y$13$t7aTXozViiwvWiDviqYNlu9X3ZTvneOA6dIcwguDQfBMZjgLO6aHm', NULL, NULL),
+(7, 'elie@gmail.com', '[]', '$2y$13$wiheh8Wj8DbclSrG92uxaeJqZBZpMZf2BXPxCcEnRSMXz2/u/0I.q', NULL, NULL),
+(8, 'josue@gmail.com', '[]', '$2y$13$bGvCiclPmXDM0WemLl41t.94GNHEkoIxBJjikpyreF.aznYot2gaW', NULL, NULL),
+(9, 'lord@gmail.com', '[]', '$2y$13$AY/mHENi.oW/BMIkGjLaM.Qg3F4/Aj75hABc73c0BlRGFD7TICM0S', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ville`
+--
+
+DROP TABLE IF EXISTS `ville`;
+CREATE TABLE IF NOT EXISTS `ville` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `province_id` int DEFAULT NULL,
+  `libelle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `created_by_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_43C3D9C3E946114A` (`province_id`),
+  KEY `IDX_43C3D9C3B03A8386` (`created_by_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `ville`
+--
+
+INSERT INTO `ville` (`id`, `province_id`, `libelle`, `description`, `created_by_id`, `created_at`, `updated_at`) VALUES
+(1, 16, 'Inongo', 'Ville de Inongo', NULL, '2022-03-15 23:56:21', '2022-03-15 23:56:21'),
+(2, 10, 'Kinshasa', 'Ville de kinshasa', NULL, '2022-03-16 00:19:05', '2022-03-16 00:19:05');
 
 -- --------------------------------------------------------
 
@@ -424,12 +579,23 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`) VALUES
 DROP TABLE IF EXISTS `zone_de_sante`;
 CREATE TABLE IF NOT EXISTS `zone_de_sante` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `province_id` int NOT NULL,
   `libelle` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ville_id` int DEFAULT NULL,
+  `created_by_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `IDX_3443E1A3E946114A` (`province_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `IDX_3443E1A3A73F0036` (`ville_id`),
+  KEY `IDX_3443E1A3B03A8386` (`created_by_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `zone_de_sante`
+--
+
+INSERT INTO `zone_de_sante` (`id`, `libelle`, `description`, `ville_id`, `created_by_id`, `created_at`, `updated_at`) VALUES
+(1, 'ZS Kikimi', 'Zone de santé de kikimi', 2, NULL, '2022-03-16 00:44:28', '2022-03-16 00:44:28');
 
 --
 -- Contraintes pour les tables déchargées
@@ -455,6 +621,12 @@ ALTER TABLE `activite`
 ALTER TABLE `categorie`
   ADD CONSTRAINT `FK_497DD634B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `FK_497DD634B3E9C81` FOREIGN KEY (`niveau_id`) REFERENCES `niveau` (`id`);
+
+--
+-- Contraintes pour la table `niveau`
+--
+ALTER TABLE `niveau`
+  ADD CONSTRAINT `FK_4BDFF36BB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`);
 
 --
 -- Contraintes pour la table `niveau_province`
@@ -497,18 +669,48 @@ ALTER TABLE `sous_activite`
   ADD CONSTRAINT `FK_B03B6140B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`);
 
 --
+-- Contraintes pour la table `structure`
+--
+ALTER TABLE `structure`
+  ADD CONSTRAINT `FK_6F0137EA5B7B45C4` FOREIGN KEY (`structure_de_reference_id`) REFERENCES `structure` (`id`),
+  ADD CONSTRAINT `FK_6F0137EAB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `FK_6F0137EABCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `categorie` (`id`);
+
+--
+-- Contraintes pour la table `type_validation_uf`
+--
+ALTER TABLE `type_validation_uf`
+  ADD CONSTRAINT `FK_DAB3C314B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`);
+
+--
 -- Contraintes pour la table `unite_fonctionnelle`
 --
 ALTER TABLE `unite_fonctionnelle`
+  ADD CONSTRAINT `FK_566558915CFF4BA` FOREIGN KEY (`zone_de_sante_id`) REFERENCES `zone_de_sante` (`id`),
   ADD CONSTRAINT `FK_566558962BB7AEE` FOREIGN KEY (`programme_id`) REFERENCES `programme` (`id`),
   ADD CONSTRAINT `FK_5665589B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `FK_5665589BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `categorie` (`id`);
 
 --
+-- Contraintes pour la table `unite_fonctionnelle_type_validation_uf`
+--
+ALTER TABLE `unite_fonctionnelle_type_validation_uf`
+  ADD CONSTRAINT `FK_E07BB1D8CFD1A8FD` FOREIGN KEY (`type_validation_uf_id`) REFERENCES `type_validation_uf` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_E07BB1D8EBB88846` FOREIGN KEY (`unite_fonctionnelle_id`) REFERENCES `unite_fonctionnelle` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `ville`
+--
+ALTER TABLE `ville`
+  ADD CONSTRAINT `FK_43C3D9C3B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `FK_43C3D9C3E946114A` FOREIGN KEY (`province_id`) REFERENCES `province` (`id`);
+
+--
 -- Contraintes pour la table `zone_de_sante`
 --
 ALTER TABLE `zone_de_sante`
-  ADD CONSTRAINT `FK_3443E1A3E946114A` FOREIGN KEY (`province_id`) REFERENCES `province` (`id`);
+  ADD CONSTRAINT `FK_3443E1A3A73F0036` FOREIGN KEY (`ville_id`) REFERENCES `ville` (`id`),
+  ADD CONSTRAINT `FK_3443E1A3B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
