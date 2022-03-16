@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use App\Traits\TimeStampTrait;
 use App\Repository\ActiviteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ActiviteRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
+
 class Activite
 {
+    use TimeStampTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -116,5 +121,9 @@ class Activite
         $this->createdBy = $createdBy;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->libelle;
     }
 }

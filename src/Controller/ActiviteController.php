@@ -101,7 +101,7 @@ class ActiviteController extends AbstractController
              'activite'=>$activite
         ]);
     }
-    #[Route('/delete/{id}', name: 'Activite.delete')]
+    #[Route('/delete/{id}', name: 'activite.delete')]
     public function deleteActivite( ManagerRegistry $doctrine,$id): Response
     {
        

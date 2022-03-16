@@ -2,12 +2,19 @@
 
 namespace App\Entity;
 
+use App\Traits\TimeStampTrait;
 use App\Repository\ZoneDeSanteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ZoneDeSanteRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
+
 class ZoneDeSante
 {
+    use TimeStampTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -19,9 +26,20 @@ class ZoneDeSante
     #[ORM\Column(type: 'text')]
     private $description;
 
-    #[ORM\ManyToOne(targetEntity: Province::class, inversedBy: 'no')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $province;
+    #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'zoneDeSantes')]
+    private $ville;
+
+    #[ORM\OneToMany(mappedBy: 'zoneDeSante', targetEntity: UniteFonctionnelle::class)]
+    private $unitefonctionnelle;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'zoneDeSantes')]
+    private $createdBy;
+
+    public function __construct()
+    {
+        $this->unitefonctionnelle = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -52,15 +70,62 @@ class ZoneDeSante
         return $this;
     }
 
-    public function getProvince(): ?Province
+    public function getVille(): ?Ville
     {
-        return $this->province;
+        return $this->ville;
     }
 
-    public function setProvince(?Province $province): self
+    public function setVille(?Ville $ville): self
     {
-        $this->province = $province;
+        $this->ville = $ville;
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, UniteFonctionnelle>
+     */
+    public function getUnitefonctionnelle(): Collection
+    {
+        return $this->unitefonctionnelle;
+    }
+
+    public function addUnitefonctionnelle(UniteFonctionnelle $unitefonctionnelle): self
+    {
+        if (!$this->unitefonctionnelle->contains($unitefonctionnelle)) {
+            $this->unitefonctionnelle[] = $unitefonctionnelle;
+            $unitefonctionnelle->setZoneDeSante($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUnitefonctionnelle(UniteFonctionnelle $unitefonctionnelle): self
+    {
+        if ($this->unitefonctionnelle->removeElement($unitefonctionnelle)) {
+            // set the owning side to null (unless already changed)
+            if ($unitefonctionnelle->getZoneDeSante() === $this) {
+                $unitefonctionnelle->setZoneDeSante(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+     public function __toString()
+    {
+        return $this->libelle;
+    }
+
 }

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ActionController extends AbstractController
 {
     #[Route('/edit/{id?0}', name: 'action.edit')]
-    public function addProgramme(Action $action=null, ManagerRegistry $doctrine,Request $request): Response
+    public function addAction(Action $action=null, ManagerRegistry $doctrine,Request $request): Response
     {
      
         $new=false;
@@ -40,22 +40,22 @@ class ActionController extends AbstractController
             $form->handleRequest($request);
             if($form->isSubmitted() ){    
                
-             //  $progrmme=$form->getData(); dd($progrmme); ==> dd($programme)
+             //  $progrmme=$form->getData(); dd($progrmme); ==> dd($action)
 
 
                 $entityManager=$doctrine->getManager();
 
-                $entityManager->persist($Action);
+                $entityManager->persist($action);
 
                 $entityManager->flush();
 
                 $this->addFlash(type:'success',message: $message);
             
-                return $this->redirectToRoute('programme.list');
+                return $this->redirectToRoute('action.list');
             }else{
 
 
-                 return $this->render('Action/create_programme.html.twig',[
+                 return $this->render('Action/create_action.html.twig',[
             'form' => $form->createView()
         ]);
             }
@@ -76,7 +76,7 @@ class ActionController extends AbstractController
        
         $nombrePage=ceil($nombreAction/$nbre);
 
-     //  $programme=$repository->findAll();
+     //  $action=$repository->findAll();
 
       $action=$repository->findBy([],[], $nbre, ($page - 1)*$nbre);
        return $this->render('action/index.html.twig', [
@@ -89,9 +89,26 @@ class ActionController extends AbstractController
        ]);
     }
 
+    #[Route('/{id<\d+>}', name: 'action.detail')]
+    public function detailAction(Action $action, ManagerRegistry $doctrine,$id): Response
+    {
+        //  $entityManager=$doctrine->getRepository(Action::class);
+ 
+        //  $action=$entityManager->find($id);
+       
+         if(!$action){
+             $this->addFlash('error'," ce action recherche n'existe pas");
+            return $this->redirectToRoute('action.list');
+        }
+        
+        return $this->render('action/detail.html.twig', [
+             'action'=>$action
+        ]);
+    }
+
    
     #[Route('/delete/{id}', name: 'action.delete')]
-    public function deleteProgramme( ManagerRegistry $doctrine,$id): Response
+    public function deleteAction( ManagerRegistry $doctrine,$id): Response
     {
        
           $entityManager=$doctrine->getRepository(Action::class);

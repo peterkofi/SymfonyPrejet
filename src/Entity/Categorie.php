@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Categorie
 {
+    
     use TimeStampTrait;
 
 
@@ -37,8 +38,12 @@ class Categorie
     #[ORM\ManyToOne(targetEntity: Niveau::class, inversedBy: 'categories')]
     private $niveau;
 
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Structure::class)]
+    private $structures;
+
     public function __construct()
     {
+        $this->structures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,11 +75,6 @@ class Categorie
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->libelle;
-    }
-
     public function getCreatedBy(): ?User
     {
         return $this->createdBy;
@@ -95,6 +95,41 @@ class Categorie
     public function setNiveau(?Niveau $niveau): self
     {
         $this->niveau = $niveau;
+
+        return $this;
+    }
+    
+    public function __toString()
+    {
+        return $this->libelle;
+    }
+
+    /**
+     * @return Collection<int, Structure>
+     */
+    public function getStructures(): Collection
+    {
+        return $this->structures;
+    }
+
+    public function addStructure(Structure $structure): self
+    {
+        if (!$this->structures->contains($structure)) {
+            $this->structures[] = $structure;
+            $structure->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStructure(Structure $structure): self
+    {
+        if ($this->structures->removeElement($structure)) {
+            // set the owning side to null (unless already changed)
+            if ($structure->getCategorie() === $this) {
+                $structure->setCategorie(null);
+            }
+        }
 
         return $this;
     }

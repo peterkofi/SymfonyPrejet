@@ -21,7 +21,7 @@ class SousActionType extends AbstractType
             ->add('description')
             ->add('action',EntityType::class,[
                 'expanded'=>false,
-                 'multiple'=>true,
+                 'multiple'=>false,
                  'class'=>Action::class,
                  'required'=>false,
                  'query_builder'=>function(EntityRepository $er){

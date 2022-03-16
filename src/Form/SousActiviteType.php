@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SousActiviteType extends AbstractType
 {
@@ -20,7 +21,7 @@ class SousActiviteType extends AbstractType
             ->add('description')
             ->add('activite',EntityType::class,[
                 'expanded'=>false,
-                 'multiple'=>true,
+                 'multiple'=>false,
                  'class'=>Activite::class,
                  'required'=>false,
                  'query_builder'=>function(EntityRepository $er){
@@ -35,7 +36,12 @@ class SousActiviteType extends AbstractType
  
              ])
             ->add('montant')
-            ->add('devise')
+            ->add('devise',ChoiceType::class,[
+                'choices'=>[
+                    'CDF'=>'CDF',
+                    'USD'=>'USD'
+                ]
+            ])
             ->add('editer',SubmitType::class)
         ;
     }

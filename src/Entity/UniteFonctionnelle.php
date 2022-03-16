@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Traits\TimeStampTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UniteFonctionnelleRepository;
 
@@ -39,6 +41,19 @@ class UniteFonctionnelle
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'uniteFonctionnelles')]
     private $createdBy;
+
+    #[ORM\ManyToOne(targetEntity: ZoneDeSante::class, inversedBy: 'unitefonctionnelle')]
+    private $zoneDeSante;
+
+    #[ORM\ManyToMany(targetEntity: TypeValidationUF::class, inversedBy: 'uniteFonctionnelles')]
+    private $typeValidation;
+
+
+
+    public function __construct()
+    {
+        $this->typeValidation = new ArrayCollection();
+    }
 
 
 
@@ -96,11 +111,6 @@ class UniteFonctionnelle
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->libelle;
-    }
-
     public function getProgramme(): ?Programme
     {
         return $this->programme;
@@ -124,6 +134,48 @@ class UniteFonctionnelle
 
         return $this;
     }
+
+    public function getZoneDeSante(): ?ZoneDeSante
+    {
+        return $this->zoneDeSante;
+    }
+
+    public function setZoneDeSante(?ZoneDeSante $zoneDeSante): self
+    {
+        $this->zoneDeSante = $zoneDeSante;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TypeValidationUF>
+     */
+    public function getTypeValidation(): Collection
+    {
+        return $this->typeValidation;
+    }
+
+    public function addTypeValidation(TypeValidationUF $typeValidation): self
+    {
+        if (!$this->typeValidation->contains($typeValidation)) {
+            $this->typeValidation[] = $typeValidation;
+        }
+
+        return $this;
+    }
+
+    public function removeTypeValidation(TypeValidationUF $typeValidation): self
+    {
+        $this->typeValidation->removeElement($typeValidation);
+
+        return $this;
+    }
+    
+    public function __toString()
+    {
+        return $this->libelle;
+    }
+
 
 
 }

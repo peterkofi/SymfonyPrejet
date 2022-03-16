@@ -65,7 +65,7 @@
   <thead class="thead-dark" style="background-color:#6e707e52 ;">
     <tr>
       <th scope="col">N°</th>
-      <th scope="col">programme</th>
+      <th scope="col">planification</th>
       <th scope="col">Action</th>
       <th scope="col">Description</th>
       <th scope="col">Operation</th>
@@ -75,7 +75,7 @@
    {% for act in action %}
     <tr>
       <th scope="row">{{act.id}}</th>
-      <td>{{ act.programme}}</td>
+      <td>{{ act.planification}}</td>
       <td>{{ act.libelle}}</td>
       <td>{{ act.description}}</td>
       <td>
@@ -84,10 +84,10 @@
           <!-- <img src="{{asset('assets/icons/visibleBlue_96px.png')}}" width="15" height="15"/> -->
         </a> 
         <a href="{{path('action.delete',{id:act.id})}}" class='mx-2'> 
-          <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
+          <i class="fa fa-trash" aria-hidden="true"></i>
         </a> 
         <a href="{{path('action.edit',{id:act.id})}}" class='mx-2'> 
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <i class="fa fa-edit" aria-hidden="true"></i>
           <!-- <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/> -->
         </a>
       </td>

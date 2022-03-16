@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\UniteFonctionnelle;
+use App\Entity\TypeValidationUF;
 use App\Entity\Programme;
 use App\Entity\Categorie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +20,15 @@ class UniteFonctionnelleType extends AbstractType
         $builder
             ->add('libelle')
             ->add('description')
+            ->add('typeValidation',EntityType::class,[
+                'expanded'=>true,
+                'multiple'=>true,
+                'required'=>false,
+                'class'=>TypeValidationUF::class,
+                'attr'=>[
+                    'class'=>'select2'
+                ]
+            ])
             ->add('createdAt')
             ->add('updatedAt')
             ->add('programme',EntityType::class,[
@@ -39,6 +50,7 @@ class UniteFonctionnelleType extends AbstractType
                     'class'=>'select2'
                 ]
             ])
+            
             ->add('editer',type: SubmitType::class)
         ;
     }

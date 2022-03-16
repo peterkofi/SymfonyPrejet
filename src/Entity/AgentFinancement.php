@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+use App\Traits\TimeStampTrait;
 use App\Repository\AgentFinancementRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AgentFinancementRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
+
 class AgentFinancement
 {
+    use TimeStampTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -46,5 +51,9 @@ class AgentFinancement
         $this->categorie = $categorie;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->libelle;
     }
 }

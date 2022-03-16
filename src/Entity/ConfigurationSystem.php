@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use App\Traits\TimeStampTrait;
 use App\Repository\ConfigurationSystemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ConfigurationSystemRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
+
 class ConfigurationSystem
 {
+    use TimeStampTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]

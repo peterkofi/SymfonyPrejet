@@ -19,7 +19,7 @@ class PlanificationType extends AbstractType
             ->add('description')
             ->add('programme',EntityType::class,[
                 'expanded'=>false,
-                 'multiple'=>true,
+                 'multiple'=>false,
                  'class'=>Programme::class,
                  'required'=>false,
                  'query_builder'=>function(EntityRepository $er){

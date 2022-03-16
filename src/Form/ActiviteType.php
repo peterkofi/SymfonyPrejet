@@ -20,15 +20,9 @@ class ActiviteType extends AbstractType
             ->add('description')
             ->add('sousAction',EntityType::class,[
                 'expanded'=>false,
-                 'multiple'=>true,
+                 'multiple'=>false,
                  'class'=>SousAction::class,
-                 'required'=>false,
-                 'query_builder'=>function(EntityRepository $er){
-                       return $er->createQueryBuilder('s')
-                                 ->orderBy('s.libelle','ASC');
-
-                 },
-                       
+                 'required'=>false,    
                  'attr'=>[
                      'class'=>'select2'
                  ]

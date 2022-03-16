@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Traits\TimeStampTrait;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,8 +11,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use TimeStampTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -53,6 +58,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Activite::class)]
     private $activites;
 
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: ZoneDeSante::class)]
+    private $zoneDeSantes;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Ville::class)]
+    private $villes;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Niveau::class)]
+    private $niveaux;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: TypeValidationUF::class)]
+    private $typeValidationUFs;
+
+    #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Structure::class)]
+    private $structures;
+
 
     public function __construct()
     {
@@ -65,6 +85,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sousActions = new ArrayCollection();
         $this->sousActivites = new ArrayCollection();
         $this->activites = new ArrayCollection();
+        $this->zoneDeSantes = new ArrayCollection();
+        $this->villes = new ArrayCollection();
+        $this->niveaux = new ArrayCollection();
+        $this->typeValidationUFs = new ArrayCollection();
+        $this->structures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -405,6 +430,156 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($activite->getCreatedBy() === $this) {
                 $activite->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ZoneDeSante>
+     */
+    public function getZoneDeSantes(): Collection
+    {
+        return $this->zoneDeSantes;
+    }
+
+    public function addZoneDeSante(ZoneDeSante $zoneDeSante): self
+    {
+        if (!$this->zoneDeSantes->contains($zoneDeSante)) {
+            $this->zoneDeSantes[] = $zoneDeSante;
+            $zoneDeSante->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeZoneDeSante(ZoneDeSante $zoneDeSante): self
+    {
+        if ($this->zoneDeSantes->removeElement($zoneDeSante)) {
+            // set the owning side to null (unless already changed)
+            if ($zoneDeSante->getCreatedBy() === $this) {
+                $zoneDeSante->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ville>
+     */
+    public function getVilles(): Collection
+    {
+        return $this->villes;
+    }
+
+    public function addVille(Ville $ville): self
+    {
+        if (!$this->villes->contains($ville)) {
+            $this->villes[] = $ville;
+            $ville->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVille(Ville $ville): self
+    {
+        if ($this->villes->removeElement($ville)) {
+            // set the owning side to null (unless already changed)
+            if ($ville->getCreatedBy() === $this) {
+                $ville->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Niveau>
+     */
+    public function getNiveaux(): Collection
+    {
+        return $this->niveaux;
+    }
+
+    public function addNiveau(Niveau $niveau): self
+    {
+        if (!$this->niveaux->contains($niveau)) {
+            $this->niveaux[] = $niveau;
+            $niveau->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNiveau(Niveau $niveau): self
+    {
+        if ($this->niveaux->removeElement($niveau)) {
+            // set the owning side to null (unless already changed)
+            if ($niveau->getCreatedBy() === $this) {
+                $niveau->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TypeValidationUF>
+     */
+    public function getTypeValidationUFs(): Collection
+    {
+        return $this->typeValidationUFs;
+    }
+
+    public function addTypeValidationUF(TypeValidationUF $typeValidationUF): self
+    {
+        if (!$this->typeValidationUFs->contains($typeValidationUF)) {
+            $this->typeValidationUFs[] = $typeValidationUF;
+            $typeValidationUF->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTypeValidationUF(TypeValidationUF $typeValidationUF): self
+    {
+        if ($this->typeValidationUFs->removeElement($typeValidationUF)) {
+            // set the owning side to null (unless already changed)
+            if ($typeValidationUF->getCreatedBy() === $this) {
+                $typeValidationUF->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Structure>
+     */
+    public function getStructures(): Collection
+    {
+        return $this->structures;
+    }
+
+    public function addStructure(Structure $structure): self
+    {
+        if (!$this->structures->contains($structure)) {
+            $this->structures[] = $structure;
+            $structure->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStructure(Structure $structure): self
+    {
+        if ($this->structures->removeElement($structure)) {
+            // set the owning side to null (unless already changed)
+            if ($structure->getCreatedBy() === $this) {
+                $structure->setCreatedBy(null);
             }
         }
 

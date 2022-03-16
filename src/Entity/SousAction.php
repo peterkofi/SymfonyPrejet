@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use App\Traits\TimeStampTrait;
 use App\Repository\SousActionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SousActionRepository::class)]
+#[ORM\HasLifecycleCallbacks()]
+
 class SousAction
 {
+    use TimeStampTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -116,5 +121,9 @@ class SousAction
         $this->createdBy = $createdBy;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->libelle;
     }
 }

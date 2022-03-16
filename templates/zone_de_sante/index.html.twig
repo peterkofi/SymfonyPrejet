@@ -19,7 +19,7 @@
 <!-- <i class="fa fa-language" aria-hidden="true"></i> -->
 <!-- 
 <i class="fa fa-trash"></i> -->
-<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('programme.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
+<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('zoneDeSante.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
 <!-- <div style="width: 250px;"> -->
   
   <div class="form-group row">
@@ -27,8 +27,8 @@
     <div class="col-3">
      <select name="selectProgram" id="selectProgram" class="form-select" style="margin-left: -40px;" >
     <option value="Tout" selected="selected">Tout</option>
-    {% for program in programme %}
-    <option value="{{program.id}}" id="{{program.id}}">{{program.libelle}}</option>
+    {% for zoneDeSant in zoneDeSante %}
+    <option value="{{zoneDeSant.id}}" id="{{zoneDeSant.id}}">{{zoneDeSant.libelle}}</option>
     {% endfor %}
   </select>
   {% if isPaginated %}
@@ -43,7 +43,7 @@
     {% endif %}
     
     {% for i in range(1, nbrePage) %}
-      <li class="page-item"><a class="page-link" href="{{path('programme.list',{page:i,nbre:nbre})}}">{{i}}</a></li>
+      <li class="page-item"><a class="page-link" href="{{path('zoneDeSante.list',{page:i,nbre:nbre})}}">{{i}}</a></li>
     {% endfor %}
 
     {% if page != nbrePage %}
@@ -64,31 +64,31 @@
   <thead class="thead-dark" style="background-color:#6e707e52 ;">
     <tr>
       <th scope="col">N°</th>
-      <th scope="col">Programme</th>
+      <th scope="col">Ville</th>
+      <th scope="col">Zone de santé</th>
       <th scope="col">Description</th>
       <th scope="col">Operation</th>
     </tr>
   </thead>
   <tbody id="dataTable">
-   {% for program in programme %}
+   {% for zoneDeSant in zoneDeSante %}
     <tr>
-      <th scope="row">{{program.id}}</th>
-      <td>{{ program.libelle}}</td>
-      <td>{{ program.description}}</td>
+      <th scope="row">{{zoneDeSant.id}}</th>
+      <td>{{ zoneDeSant.ville}}</td>
+      <td>{{ zoneDeSant.libelle}}</td>
+      <td>{{ zoneDeSant.description}}</td>
       <td>
-        <a href="{{path('programme.detail',{id:program.id})}}" class='mx-2'> 
+        <a href="{{path('zoneDeSante.detail',{id:zoneDeSant.id})}}" class='mx-2'> 
           <i class="fa fa-eye" aria-hidden="true"></i>
           <!-- <img src="{{asset('assets/icons/visibleBlue_96px.png')}}" width="15" height="15"/> -->
         </a> 
-        <a href="{{path('programme.delete',{id:program.id})}}" class='mx-2'> 
-          <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
+        <a href="{{path('zoneDeSante.delete',{id:zoneDeSant.id})}}" class='mx-2'> 
+          <i class="fa fa-trash" aria-hidden="true"></i>
         </a> 
-        <a href="{{path('programme.edit',{id:program.id})}}" class='mx-2'> 
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-          <!-- <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/> -->
+        <a href="{{path('zoneDeSante.edit',{id:zoneDeSant.id})}}" class='mx-2'> 
+          <i class="fa fa-edit" aria-hidden="true"></i>
         </a>
       </td>
-      
     </tr>
    {% endfor %}
   </tbody>
@@ -121,7 +121,7 @@
      /* $.ajax({
         type:"GET",
         data:encodeURIComponent(ident),
-        url:"/programme/",
+        url:"/zoneDeSante/",
         success:function(data){
             console.log(data);
         }

@@ -1,0 +1,150 @@
+
+{% extends "template.html.twig" %}
+
+{% block pageTitle %}
+<h5 class="d-flex justify-content-center my-4 text-bold/">VISUALISATION STRUCTURE</h5>
+<hr>
+{% endblock %}
+
+
+{% block body %}
+
+{% for message in app.session.flashBag.get('error') %}
+    <div class="alert alert-danger" role="alert">  {{message}} </div>
+{% endfor %}
+
+{% for message in app.session.flashBag.get('success') %}
+    <div class="alert alert-success" role="alert">  {{message}} </div>
+{% endfor %}
+<!-- <i class="fa fa-phone" aria-hidden="false"></i> -->
+<!-- <i class="fa fa-language" aria-hidden="true"></i> -->
+<!-- 
+<i class="fa fa-trash"></i> -->
+<div class="" style="width:30px; height:30px; background-color:rgba(33, 37, 41); border-radius:50%; box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25); float:right"><a href="{{path('structure.edit',{id:null})}}"> <i class="fa fa-plus" style="margin:7px 7px;"></i></a></div>
+<!-- <div style="width: 250px;"> -->
+  
+  <div class="form-group row">
+    <label for="selectstructureL" class="col-1 col-form-label" id="selectstructureL"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+    <div class="col-3">
+     <select name="selectstructure" id="selectstructure" class="form-select" style="margin-left: -40px;" >
+    <option value="Tout" selected="selected">Tout</option>
+    {% for struct in structure %}
+    <option value="{{struct.id}}" id="{{struct.id}}">{{struct.libelle}}</option>
+    {% endfor %}
+  </select>
+  {% if isPaginated %}
+ <nav  style="position:absolute; right:80px; top:15px">
+  <ul class="pagination">
+    {% if page != 1 %}
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    
+    {% for i in range(1, nbrePage) %}
+      <li class="page-item"><a class="page-link" href="{{path('structure.list',{page:i,nbre:nbre})}}">{{i}}</a></li>
+    {% endfor %}
+
+    {% if page != nbrePage %}
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav> 
+{% endif %}
+    </div>
+ 
+<!-- </div>  -->
+
+<table class="table table-bordered table-striped mt-2">
+  <thead class="thead-dark" style="background-color:#6e707e52 ;">
+    <tr>
+      <th scope="col">N°</th>
+      <th scope="col">Categorie Structure</th>
+      <th scope="col">Structure</th>
+      <th scope="col">Description</th>
+      <th scope="col">Type</th>
+      <th scope="col">Reference</th>
+      <th scope="col">Operation</th>
+    </tr>
+  </thead>
+  <tbody id="dataTable">
+   {% for struct in structure %}
+    <tr>
+      <th scope="row">{{struct.id}}</th>
+      <td>{{ struct.categorie}}</td>
+      <td>{{ struct.libelle}}</td>
+      <td>{{ struct.description}}</td>
+      <td>{{ struct.typeDeStructure}}</td>
+      <td {% if struct.StructureDeReference is empty  %} {{ "style=background-color:#40414796"}} {% endif %}>{{ struct.StructureDeReference}}</td>
+      <td>
+        <a href="{{path('structure.detail',{id:struct.id})}}" class='mx-2'> 
+          <i class="fa fa-eye" aria-hidden="true"></i>
+        </a> 
+        <a href="{{path('structure.delete',{id:struct.id})}}" class='mx-2'> 
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </a> 
+        <a href="{{path('structure.edit',{id:struct.id})}}" class='mx-2'> 
+          <i class="fa fa-edit" aria-hidden="true"></i>
+        </a>
+      </td>
+      
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+ <div class='row mt-2'>
+<div class="d-flex justify-content-end">
+ 
+ </div>
+ </div>
+  
+
+{% endblock %}
+
+{% block javasript %}
+<script>
+  $(Document).ready(function(){
+   
+/*   $("#selectstructureL").click(function(){
+     $("$selectstructure").change();
+   })
+
+*/
+      $("#selectstructure").change(function(){
+      ident=$(this).val();
+      province= $("#"+ident).text();
+     
+      $("#dataTable tr").filter(function(){
+       $(this).toggle($(this).text().indexOf(province) > -1);
+      });
+     /* $.ajax({
+        type:"GET",
+        data:encodeURIComponent(ident),
+        url:"/structure/",
+        success:function(data){
+            console.log(data);
+        }
+      })
+      */
+
+    });
+
+    $("#findAll").keyup(function(){
+      province=$(this).val().toLowerCase();
+      console.log(province);
+      
+      $("#dataTable tr").filter(function(){
+        $(this).toggle($(this).text().toLowerCase().indexOf(province) > -1);
+      })
+    });
+    
+
+}); 
+</script>
+{% endblock %}

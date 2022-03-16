@@ -20,7 +20,7 @@ class ActionType extends AbstractType
             ->add('description')
             ->add('planification',EntityType::class,[
                 'expanded'=>false,
-                 'multiple'=>true,
+                 'multiple'=>false,
                  'class'=>Planification::class,
                  'required'=>false,
                  'query_builder'=>function(EntityRepository $er){

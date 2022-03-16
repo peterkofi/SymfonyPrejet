@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\NiveauRepository;
+use Symfony\component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NiveauRepository::class)]
 #[ORM\HasLifecycleCallbacks()]
@@ -32,6 +33,9 @@ class Niveau
 
     #[ORM\OneToMany(mappedBy: 'niveau', targetEntity: Categorie::class)]
     private $categories;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'niveaux')]
+    private $createdBy;
 
     public function __construct()
     {
@@ -67,12 +71,7 @@ class Niveau
 
         return $this;
     }
-
-    public function __toString()
-    {
-        return $this->libelle;
-    }
-
+ 
     /**
      * @return Collection<int, Province>
      */
@@ -126,5 +125,23 @@ class Niveau
 
         return $this;
     }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->libelle;
+    }
+
+     
 
 }

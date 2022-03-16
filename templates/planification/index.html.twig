@@ -29,7 +29,7 @@
      <select name="selectProgram" id="selectProgram" class="form-select" style="margin-left: -40px;" >
     <option value="Tout" selected="selected">Tout</option>
     {% for planif in planification %}
-    <option value="{{planif.id}}" id="{{planif.id}}">{{planif.libelle}}</option>
+    <option value="{{planif.id}}" id="{{planif.id}}">{{planif.programme}}</option>
     {% endfor %}
   </select>
   {% if isPaginated %}
@@ -85,7 +85,7 @@
           <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
         </a> 
         <a href="{{path('planification.edit',{id:planif.id})}}" class='mx-2'> 
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <i class="fa fa-pencil-edit" aria-hidden="true"></i>
           <!-- <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/> -->
         </a>
       </td>

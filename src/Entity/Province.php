@@ -32,10 +32,14 @@ class Province
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $chefLieu;
 
+    #[ORM\OneToMany(mappedBy: 'province', targetEntity: Ville::class)]
+    private $villes;
+
 
     public function __construct()
     {
         $this->niveaux = new ArrayCollection();
+        $this->villes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,6 +111,36 @@ class Province
     public function setChefLieu(?string $chefLieu): self
     {
         $this->chefLieu = $chefLieu;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ville>
+     */
+    public function getVilles(): Collection
+    {
+        return $this->villes;
+    }
+
+    public function addVille(Ville $ville): self
+    {
+        if (!$this->villes->contains($ville)) {
+            $this->villes[] = $ville;
+            $ville->setProvince($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVille(Ville $ville): self
+    {
+        if ($this->villes->removeElement($ville)) {
+            // set the owning side to null (unless already changed)
+            if ($ville->getProvince() === $this) {
+                $ville->setProvince(null);
+            }
+        }
 
         return $this;
     }

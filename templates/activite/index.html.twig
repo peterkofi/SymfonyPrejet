@@ -75,7 +75,7 @@
    {% for activ in activite %}
     <tr>
       <th scope="row">{{activ.id}}</th>
-      <td>{{ activ.programme}}</td>
+      <td>{{ activ.sousAction}}</td>
       <td>{{ activ.libelle}}</td>
       <td>{{ activ.description}}</td>
       <td>
@@ -84,10 +84,10 @@
           <!-- <img src="{{asset('assets/icons/visibleBlue_96px.png')}}" width="15" height="15"/> -->
         </a> 
         <a href="{{path('activite.delete',{id:activ.id})}}" class='mx-2'> 
-          <img src="{{asset('assets/icons/deleteBlue_96px.png')}}" width="15" height="15"/>
+          <i class="fa fa-trash" aria-hidden="true"></i>
         </a> 
         <a href="{{path('activite.edit',{id:activ.id})}}" class='mx-2'> 
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          <i class="fa fa-edit" aria-hidden="true"></i>
           <!-- <img src="{{asset('assets/icons/editBlue_104px.png')}}" width="15" height="15"/> -->
         </a>
       </td>
